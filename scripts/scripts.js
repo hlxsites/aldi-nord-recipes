@@ -487,10 +487,212 @@ function decorateTemplateAndTheme() {
 }
 
 /**
+ * Gets the experiment name, if any for the page based on env, useragent, queyr params
+ * @returns {string} experimentid
+ */
+ export function getExperiment() {
+  // Non-prod website get default content
+  if (!window.location.host.includes('.hlx.live')) {
+    return null;
+  }
+  // Anchor links get default content
+  if (window.location.hash) {
+    return null;
+  }
+  // Bots get default content
+  if (navigator.userAgent.match(/bot|crawl|spider/i)) {
+    return null;
+  }
+
+  // Get experiment from markup
+  return toClassName(getMeta('experiment'));
+}
+
+/**
+ * const config = {
+      experimentName: `Instant Experiment: ${experimentId}`,
+      audience: '',
+      status: 'Active',
+      id: experimentId,
+      variants: {},
+      variantNames: [],
+    };
+ */
+ export async function parseExperimentConfig(json) {
+  const config = {};
+  try {
+    json.settings.data.forEach((row) => {
+      config[toCamelCase(row.Name)] = row.Value;
+    });
+    
+    config.variantNames = [];
+    config.variants = {};
+    json.experiences.data.slice(1).forEach((row) => {
+      const variantName = toCamelCase(row.Name);
+      config.variantNames.push(variantName);
+      config.variants[variantName] = {
+        percentageSplit: row.Split,
+        pages: [new URL(row.Page.trim()).pathname],
+        label: row.Label,
+      }
+    });
+    return config;
+  } catch (e) {
+    console.log(`error loading experiment manifest: ${path}`, e);
+  }
+  return null;
+}
+
+/**
+ * Gets experiment config from the manifest and transforms it to more easily
+ * consumable structure.
+ *
+ * the manifest consists of two sheets "settings" and "experiences"
+ *
+ * "settings" is applicable to the entire test and contains information
+ * like "Audience", "Status" or "Blocks".
+ *
+ * "experience" hosts the experiences in columns, consisting of:
+ * a "Percentage Split", "Label" and a set of "Pages".
+ *
+ *
+ * @param {string} experimentId
+ * @returns {object} containing the experiment manifest
+ */
+ export async function getExperimentConfig(experimentId) {
+  const path = `/experiments/${experimentId}/franklin-experiment.json`;
+  try {
+    const resp = await fetch(path);
+    const json = await resp.json();
+    const config = parseExperimentConfig(json);
+    config.id = experimentId;
+    config.manifest = path;
+    console.log(config);
+    return config;
+  } catch (e) {
+    console.log(`error loading experiment manifest: ${path}`, e);
+  }
+  return null;
+}
+
+/**
+ * this is an extensible stub to take on audience mappings
+ * @param {string} audience
+ * @return {boolean} is member of this audience
+ */
+ function isValidAudience(audience) {
+  if (audience === 'mobile') {
+    return window.innerWidth < 600;
+  }
+  if (audience === 'desktop') {
+    return window.innerWidth >= 600;
+  }
+  return true;
+}
+
+function getRandomVariant(config) {
+  let random = Math.random();
+  let i = config.variantNames.length;
+  while (random > 0 && i > 0) {
+    i -= 1;
+    console.debug(random, i);
+    random -= +config.variants[config.variantNames[i]].percentageSplit;
+  }
+  return config.variantNames[i];
+}
+
+/**
+ * sets/updates the variant id that is assigned to this visitor,
+ * also cleans up old variant ids
+ * @param {string} experimentId
+ * @param {variant} variant
+ */
+
+ function saveSelectedExperimentVariant(experimentId, variant) {
+  const experimentsStr = localStorage.getItem('hlx-experiments');
+  const experiments = experimentsStr ? JSON.parse(experimentsStr) : {};
+
+  const now = new Date();
+  const expKeys = Object.keys(experiments);
+  expKeys.forEach((key) => {
+    const date = new Date(experiments[key].date);
+    if (now - date > (1000 * 86400 * 30)) {
+      delete experiments[key];
+    }
+  });
+  const [date] = now.toISOString().split('T');
+
+  experiments[experimentId] = { variant, date };
+  localStorage.setItem('hlx-experiments', JSON.stringify(experiments));
+}
+
+/**
+ * checks if a test is active on this page and if so executes the test
+ */
+ async function decorateTesting() {
+  try {
+    const experiment = getExperiment();
+    if (!experiment) {
+      return;
+    }
+
+    const usp = new URLSearchParams(window.location.search);
+    const [forcedExperiment, forcedVariant] = usp.has('experiment') ? usp.get('experiment').split('/') : [];
+    console.debug('experiment', forcedExperiment || experiment, forcedVariant || '');
+    
+    const config = await getExperimentConfig(experiment);
+    console.debug(config);
+    if (toCamelCase(config.status) !== 'active' && !forcedExperiment) {
+      return;
+    }
+
+    config.run = forcedExperiment || isValidAudience(toClassName(config.audience));
+    window.hlx = window.hlx || {};
+    window.hlx.experiment = config;
+    console.debug('run', config.run, config.audience);
+    if (!config.run) {
+      return;
+    }
+
+    const forced = forcedVariant || getLastExperimentVariant(config.id);
+    if (forced && config.variantNames.includes(forced)) {
+      config.selectedVariant = forced;
+    } else {
+      config.selectedVariant = getRandomVariant(config);
+    }
+
+    saveSelectedExperimentVariant(config.id, config.selectedVariant);
+    sampleRUM('experiment', { source: config.id, target: config.selectedVariant });
+    console.debug(`running experiment (${window.hlx.experiment.id}) -> ${window.hlx.experiment.selectedVariant}`);
+
+    if (config.selectedVariant === 'control') {
+      return;
+    }
+
+    const currentPath = window.location.pathname;
+    const pageIndex = config.variants.control.pages.indexOf(currentPath);
+    console.debug(pageIndex, config.variants.control.pages, currentPath);
+    if (pageIndex < 0) {
+      return;
+    }
+
+    const page = config.variants[config.selectedVariant].pages[pageIndex];
+    if (!page) {
+      return;
+    }
+    const experimentPath = new URL(page, window.location.href).pathname.split('.')[0];
+    if (experimentPath && experimentPath !== currentPath) {
+      await replaceInner(experimentPath, document.querySelector('main'));
+    }
+  } catch (e) {
+    console.log('error testing', e);
+  }
+}
+
+/**
  * decorates paragraphs containing a single link as buttons.
  * @param {Element} element container element
  */
-
 export function decorateButtons(element) {
   element.querySelectorAll('a').forEach((a) => {
     a.title = a.title || a.textContent;
@@ -667,6 +869,8 @@ export function decorateMain(main) {
  */
 async function loadEager(doc) {
   decorateTemplateAndTheme();
+  await decorateTesting();
+
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
