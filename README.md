@@ -1,9 +1,10 @@
-# Your Project's Title...
-Your project's description...
+# Aldi Nord Rezepte
+
+Franklin-based version of the https://www.aldi-nord.de/rezepte.html micro-site.
 
 ## Environments
-- Preview: https://main--{repo}--{owner}.hlx.page/
-- Live: https://main--{repo}--{owner}.hlx.live/
+- Preview: https://main--aldi-nord-recipes--hlxsites.hlx.page/
+- Live: https://main--aldi-nord-recipes--hlxsites.hlx.live/
 
 ## Installation
 
@@ -14,7 +15,7 @@ npm i
 ## Tests
 
 ```sh
-npm tst
+npm test
 ```
 
 ## Local development
