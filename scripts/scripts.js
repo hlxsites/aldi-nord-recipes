@@ -505,7 +505,7 @@ function decorateTemplateAndTheme() {
   }
 
   // Get experiment from markup
-  return toClassName(getMeta('experiment'));
+  return toClassName(getMetadata('experiment'));
 }
 
 /**
