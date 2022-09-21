@@ -492,9 +492,9 @@ function decorateTemplateAndTheme() {
  */
  export function getExperiment() {
   // Non-prod website get default content
-  if (!window.location.host.includes('.hlx.live')) {
-    return null;
-  }
+  // if (!window.location.host.includes('.hlx.live')) {
+  //   return null;
+  // }
   // Anchor links get default content
   if (window.location.hash) {
     return null;
