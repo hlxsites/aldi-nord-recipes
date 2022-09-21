@@ -567,7 +567,6 @@ function decorateTemplateAndTheme() {
     const config = parseExperimentConfig(json);
     config.id = experimentId;
     config.manifest = path;
-    console.log(config);
     return config;
   } catch (e) {
     console.log(`error loading experiment manifest: ${path}`, e);
@@ -607,7 +606,6 @@ function getRandomVariant(config) {
  * @param {string} experimentId
  * @param {variant} variant
  */
-
  function saveSelectedExperimentVariant(experimentId, variant) {
   const experimentsStr = localStorage.getItem('hlx-experiments');
   const experiments = experimentsStr ? JSON.parse(experimentsStr) : {};
@@ -624,6 +622,24 @@ function getRandomVariant(config) {
 
   experiments[experimentId] = { variant, date };
   localStorage.setItem('hlx-experiments', JSON.stringify(experiments));
+}
+
+/**
+ * gets the variant id that this visitor has been assigned to if any
+ * @param {string} experimentId
+ * @return {string} assigned variant or empty string if none set
+ */
+
+ function getSavedExperimentVariant(experimentId) {
+  console.log('get last experiment', experimentId);
+  const experimentsStr = localStorage.getItem('hlx-experiments');
+  if (experimentsStr) {
+    const experiments = JSON.parse(experimentsStr);
+    if (experiments[experimentId]) {
+      return experiments[experimentId].variant;
+    }
+  }
+  return '';
 }
 
 /**
@@ -654,7 +670,7 @@ function getRandomVariant(config) {
       return;
     }
 
-    const forced = forcedVariant || getLastExperimentVariant(config.id);
+    const forced = forcedVariant || getSavedExperimentVariant(config.id);
     if (forced && config.variantNames.includes(forced)) {
       config.selectedVariant = forced;
     } else {
