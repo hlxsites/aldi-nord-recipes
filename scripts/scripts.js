@@ -518,7 +518,7 @@ function decorateTemplateAndTheme() {
       variantNames: [],
     };
  */
- export async function parseExperimentConfig(json) {
+ export function parseExperimentConfig(json) {
   const config = {};
   try {
     json.settings.data.forEach((row) => {
