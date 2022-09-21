@@ -527,7 +527,7 @@ function decorateTemplateAndTheme() {
     
     config.variantNames = [];
     config.variants = {};
-    json.experiences.data.slice(1).forEach((row) => {
+    json.experiences.data.forEach((row) => {
       const variantName = toCamelCase(row.Name);
       config.variantNames.push(variantName);
       config.variants[variantName] = {
@@ -631,15 +631,13 @@ function getRandomVariant(config) {
  */
 
  function getSavedExperimentVariant(experimentId) {
-  console.log('get last experiment', experimentId);
   const experimentsStr = localStorage.getItem('hlx-experiments');
-  if (experimentsStr) {
-    const experiments = JSON.parse(experimentsStr);
-    if (experiments[experimentId]) {
-      return experiments[experimentId].variant;
-    }
+  if (!experimentsStr) {
+    return null;
   }
-  return '';
+
+  const experiments = JSON.parse(experimentsStr);
+  return experiments[experimentId] ? experiments[experimentId].variant : null;
 }
 
 /**
