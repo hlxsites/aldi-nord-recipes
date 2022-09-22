@@ -50,6 +50,7 @@ body {
   color: var(--text-color);
   background-color: var(--background-color);
   display: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 body.appear {
@@ -220,7 +221,7 @@ main img {
     --heading-font-size-xs: 22px;  
   }
   
-  .section > div {
+  main .section > div {
     max-width: 1200px;
     margin: auto;
   }

@@ -640,6 +640,7 @@ function loadFooter(footer) {
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
+// eslint-disable-next-line no-unused-vars
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
@@ -657,7 +658,7 @@ export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
-  buildAutoBlocks(main);
+  // TODO buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
 }
