@@ -710,7 +710,6 @@ function getRandomVariant(config) {
 
     const currentPath = window.location.pathname;
     const pageIndex = config.variants[config.variantNames[0]].pages.indexOf(currentPath);
-    console.debug(pageIndex, config.variants[config.variantNames[0]].pages, currentPath);
     if (pageIndex < 0) {
       return;
     }
