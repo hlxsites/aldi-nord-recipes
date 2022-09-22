@@ -3,9 +3,7 @@ import { readBlockConfig, decorateIcons } from '../../scripts/scripts.js';
 export default function decorate(block) {
     block.textContent = '';
 
-    let paths = document.location.pathname.split('/');
-    console.log(paths)
-    
+    let paths = document.location.pathname.split('/');  
     let ul = document.createElement('ul');
 
     // DEMO: we have no homepage, rezepte is the root page
