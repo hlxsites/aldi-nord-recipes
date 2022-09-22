@@ -1,5 +1,4 @@
-export default function decorate(block){
-
+export default function decorate(block) {
   const flexDiv = document.createElement('div');
 
   [...block.children].forEach((row) => {
