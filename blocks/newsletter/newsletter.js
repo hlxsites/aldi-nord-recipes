@@ -1,3 +1,5 @@
+import { createOptimizedPicture } from '../../scripts/scripts.js';
+
 export default function decorate(block) {
   const cols = [...block.firstElementChild.children];
   if (cols.length === 2) {
@@ -17,6 +19,7 @@ export default function decorate(block) {
     // Move image to left
     const appImageContainer = apps.querySelector('.newsletter-apps > p');
     left.appendChild(appImageContainer.querySelector('picture'));
+    left.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '80' }])));
     apps.removeChild(appImageContainer);
 
     // Move remaining content to right
@@ -24,6 +27,8 @@ export default function decorate(block) {
       apps.removeChild(elem);
       right.appendChild(elem);
     });
+    right.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ height: '40' }])));
+
     apps.appendChild(appContent);
 
     // Newsletter Form
