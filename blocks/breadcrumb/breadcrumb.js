@@ -20,7 +20,7 @@ export default function decorate(block) {
             li.append(span);
         }
 
-        // add link
+        // add link, if not page itself
         if (i !== paths.length -1) {
             let a = document.createElement('a');
             if (i != 0) {
