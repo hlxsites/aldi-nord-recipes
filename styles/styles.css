@@ -14,14 +14,14 @@
 @font-face {
   font-family: FFDINWebPro;
   src: url("/fonts/DIN.ttf") format('ttf');
-  font-weight: 100-399;
+  font-weight: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: FFDINWebProBold;
-  src: url("/fonts/DIN\ Bold.ttf") format('ttf');
-  font-weight: 400-800;
+  src: url("/fonts/DINBold.ttf") format('ttf');
+  font-weight: 600;
   font-display: swap;
 }
 
@@ -32,10 +32,10 @@
   --background-color: #fff;
   --overlay-background-color: #eee;
   --highlight-background-color: #ccc;
-  --text-color: #000;
+  --text-color: #172b4d;
 
   /* fonts */
-  --body-font-family: ffdinwebpro,Arial,sans-serif;
+  --body-font-family: FFDINWebPro,Arial,sans-serif;
   --heading-font-family: var(--body-font-family);
 
   
@@ -79,6 +79,7 @@ h1, h2, h3,
 h4, h5, h6 {
   font-family: var(--heading-font-family);
   font-weight: 600;
+  color: #172b4d;
   line-height: 1.25;
   margin-top: 1em;
   margin-bottom: .5em;
