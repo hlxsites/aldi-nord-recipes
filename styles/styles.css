@@ -14,13 +14,13 @@
 @font-face {
   font-family: FFDINWebProBold;
   src: url("/fonts/DIN\ Bold.ttf") format('ttf');
-  font-weight: 800;
+  font-weight: bold;
 }
 
 @font-face {
   font-family: FFDINWebPro;
   src: url("/fonts/DIN.ttf") format('ttf');
-  font-weight: 100;
+  font-weight:normal;
 }
 
  :root {
