@@ -643,7 +643,7 @@ function getRandomVariant(config) {
 /**
  * checks if a test is active on this page and if so executes the test
  */
- async function decorateTesting() {
+ async function decorateExperiment() {
   try {
     const experiment = getExperiment();
     if (!experiment) {
@@ -679,13 +679,13 @@ function getRandomVariant(config) {
     sampleRUM('experiment', { source: config.id, target: config.selectedVariant });
     console.debug(`running experiment (${window.hlx.experiment.id}) -> ${window.hlx.experiment.selectedVariant}`);
 
-    if (config.selectedVariant === 'control') {
+    if (config.selectedVariant === config.variantNames[0]) {
       return;
     }
 
     const currentPath = window.location.pathname;
-    const pageIndex = config.variants.control.pages.indexOf(currentPath);
-    console.debug(pageIndex, config.variants.control.pages, currentPath);
+    const pageIndex = config.variants[config.variantNames[0]].pages.indexOf(currentPath);
+    console.debug(pageIndex, config.variants[config.variantNames[0]].pages, currentPath);
     if (pageIndex < 0) {
       return;
     }
@@ -883,7 +883,7 @@ export function decorateMain(main) {
  */
 async function loadEager(doc) {
   decorateTemplateAndTheme();
-  await decorateTesting();
+  await decorateExperiment();
 
   const main = doc.querySelector('main');
   if (main) {
