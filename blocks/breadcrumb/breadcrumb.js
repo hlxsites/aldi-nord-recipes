@@ -1,9 +1,9 @@
-import { readBlockConfig, decorateIcons } from '../../scripts/scripts.js';
+import { decorateIcons } from '../../scripts/scripts.js';
 
 export default function decorate(block) {
     block.textContent = '';
 
-    let paths = document.location.pathname.split('/');  
+    let paths = document.location.pathname.split('/');
     let ul = document.createElement('ul');
 
     // DEMO: we have no homepage, rezepte is the root page
@@ -12,7 +12,7 @@ export default function decorate(block) {
     let li = document.createElement('li')
     let a = document.createElement('a')
     a.append("Startseite");
-    a.setAttribute("href","/")
+    a.setAttribute("href", "/")
     li.append(a);
     ul.append(li);
 
@@ -22,14 +22,14 @@ export default function decorate(block) {
         let li = document.createElement('li');
 
         // arrow icon, unless root
-     
-            let span = document.createElement('span');
-            span.setAttribute("class", "icon icon-arrow-right");
-            li.append(span);
-        
+
+        let span = document.createElement('span');
+        span.setAttribute("class", "icon icon-arrow-right");
+        li.append(span);
+
 
         // add link, if not page itself
-        if (i !== paths.length -1) {
+        if (i !== paths.length - 1) {
             let a = document.createElement('a');
             if (i != 0) {
                 href += "/" + element;
