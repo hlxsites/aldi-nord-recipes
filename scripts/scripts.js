@@ -148,7 +148,7 @@ export function decorateIcons(element = document) {
     if (span.classList.length < 2 || !span.classList[1].startsWith('icon-')) {
       return;
     }
-    
+
     const icon = span.classList[1].substring(5);
 
     // eslint-disable-next-line no-use-before-define

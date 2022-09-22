@@ -1,11 +1,10 @@
-export default function decorate(block) {
+export default function decorate(block){
 
   const flexDiv = document.createElement('div');
 
-  [...block.children].forEach(row => {
-    const anchor = row.children[1].children[0].getAttribute('href')
+  [...block.children].forEach((row) => {
+    const anchor = row.children[1].children[0].getAttribute('href');
     const title = row.children[0].innerHTML;
-    console.log(anchor, title);
     const a = document.createElement('a');
     a.setAttribute('class', 'tocButton');
     a.setAttribute('href', anchor);

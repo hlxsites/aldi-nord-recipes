@@ -3,8 +3,8 @@ import { decorateIcons } from '../../scripts/scripts.js';
 export default function decorate(block) {
   block.textContent = '';
 
-  let paths = document.location.pathname.split('/');
-  let ul = document.createElement('ul');
+  const paths = document.location.pathname.split('/');
+  const ul = document.createElement('ul');
   // DEMO: we have no homepage, rezepte is the root page
   paths.shift();
   paths[0] = 'rezepte';
@@ -18,14 +18,12 @@ export default function decorate(block) {
   // go through the path segments
   let href = '';
   paths.forEach((element, i) => {
-    let li = document.createElement('li');
+    const li = document.createElement('li');
 
     // arrow icon, unless root
-
-    let span = document.createElement('span');
+    const span = document.createElement('span');
     span.setAttribute('class', 'icon icon-arrow-right');
     li.append(span);
-
 
     // add link, if not page itself
     if (i !== paths.length - 1) {
