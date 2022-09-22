@@ -1,0 +1,21 @@
+.breadcrumb {
+    color: #5c6a82;
+    display: inline-block;
+    font-size: .625rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.breadcrumb ul {
+    display: flex;
+    list-style: none;
+
+}
+
+.breadcrumb .icon-arrow-right svg  {
+    font-size: var(--body-font-size-m);
+    color: #172b4d;
+    height: 8px;
+    margin: 0 2px;
+    width: 8px;
+}
+
