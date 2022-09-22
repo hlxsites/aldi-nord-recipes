@@ -1,66 +1,106 @@
-import { readBlockConfig, decorateIcons } from '../../scripts/scripts.js';
-
-/**
- * collapses all open nav sections
- * @param {Element} sections The container element
- */
-
-function collapseAllNavSections(sections) {
-  sections.querySelectorAll('.nav-sections > ul > li').forEach((section) => {
-    section.setAttribute('aria-expanded', 'false');
-  });
-}
-
-/**
- * decorates the header, mainly the nav
- * @param {Element} block The header block element
- */
+import { decorateIcons, createOptimizedPicture } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
-  const cfg = readBlockConfig(block);
-  block.textContent = '';
+  const resp = await fetch('header.plain.html');
+  const html = await resp.text();
+  const headerSource = document.createRange().createContextualFragment(html);
 
-  // fetch nav content
-  const navPath = cfg.nav || '/header';
-  const resp = await fetch(`${navPath}.plain.html`);
-  if (resp.ok) {
-    const html = await resp.text();
+  // Extract logo from header
+  const logo = headerSource.querySelector('picture');
 
-    // decorate nav DOM
-    const nav = document.createElement('nav');
-    nav.innerHTML = html;
-    decorateIcons(nav);
+  // Hardcode complete header
+  const headerFragment = document.createRange().createContextualFragment(`
+    <div class="header-meta-wrapper">
+      <div class="header-meta">
+        <div class="header-meta-usp">Beste Qualität zum Original ALDI Preis.</div>
+        <div class="header-meta-navigation">
+          <ul>
+            <li>
+                <a href="/tools/kontakt.html">Kontakt</a>
+            </li>
+            <li>
+                <a href="/karriere">Karriere</a>
+            </li>
+            <li>
+                <a href="/unternehmen">Unternehmen</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="header-tools-wrapper">
+    <div class="header-tools">
+      <div class="header-tools-logo"></div>
+      <div class="header-tools-search">
+        <form>
+          <div class="searchbox">
+            <input autocomplete="off" autocorrect="off" autocapitalize="off" enterkeyhint="search" spellcheck="false" placeholder="Produkte und Angebote finden" maxlength="512" type="search" />
+            <span class="icon icon-search"></span>
+          </div>
+        </form>
+      </div>
+      <div class="header-tools-storepicker">
+        <a href="/filialen-und-oeffnungszeiten.html">
+          <span class="icon icon-storefinder"></span>
+          <span>Filialsuche</span>
+        </a>
+      </div>
+      <div class="header-tools-cart">
+        <a href="/einkaufsliste.html">
+          <span class="icon icon-list"></span>
+          <span>Einkaufsliste</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="header-navigation-wrapper">
+    <div class="header-navigation">
+      <ul>
+        <li>
+          <a href="/angebote.html">
+            <span class="icon icon-offers"></span>
+            <span>Angebote</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.aldi-onlineshop.de">
+            <span class="icon icon-cart"></span>
+            <span>ALDI ONLINESHOP</span>
+          </a>
+        </li>
+        <li>
+          <a href="/prospekte.html">
+            <span class="icon icon-magazine"></span>
+            <span>Prospekte</span>
+          </a>
+        </li>
+        <li>
+          <a href="/sortiment.html">
+            <span class="icon icon-products"></span>
+            <span>Produkte</span>
+          </a>
+        </li>
+        <li>
+          <a href="/rezepte.html">
+            <span class="icon icon-recipe"></span>
+            <span>Rezepte</span>
+          </a>
+        </li>
+        <li>
+          <a href="/ratgeber-tipps.html">
+            <span class="icon icon-themes"></span>
+            <span>Ratgeber &amp; Tipps</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>`);
 
-    const classes = ['brand', 'sections', 'tools'];
-    classes.forEach((e, j) => {
-      const section = nav.children[j];
-      if (section) section.classList.add(`nav-${e}`);
-    });
+  block.innerHTML = '';
+  const logoContainer = headerFragment.querySelector('.header-tools-logo');
+  logoContainer.appendChild(logo);
+  logoContainer.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '80' }])));
 
-    const navSections = [...nav.children][1];
-    if (navSections) {
-      navSections.querySelectorAll(':scope > ul > li').forEach((navSection) => {
-        if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
-        navSection.addEventListener('click', () => {
-          const expanded = navSection.getAttribute('aria-expanded') === 'true';
-          collapseAllNavSections(navSections);
-          navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        });
-      });
-    }
-
-    // hamburger for mobile
-    const hamburger = document.createElement('div');
-    hamburger.classList.add('nav-hamburger');
-    hamburger.innerHTML = '<div class="nav-hamburger-icon"></div>';
-    hamburger.addEventListener('click', () => {
-      const expanded = nav.getAttribute('aria-expanded') === 'true';
-      document.body.style.overflowY = expanded ? '' : 'hidden';
-      nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-    });
-    nav.prepend(hamburger);
-    nav.setAttribute('aria-expanded', 'false');
-    decorateIcons(nav);
-    block.append(nav);
-  }
+  block.appendChild(headerFragment);
+  decorateIcons(block);
 }
