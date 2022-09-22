@@ -807,6 +807,10 @@ async function loadPage(doc) {
   await loadLazy(doc);
   // eslint-disable-next-line no-use-before-define
   loadDelayed(doc);
+
+  if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost')) {
+    import('./experiment-preview.js');
+  }
 }
 
 export function initHlx() {
