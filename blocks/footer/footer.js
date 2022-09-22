@@ -1,4 +1,4 @@
-import { readBlockConfig, decorateIcons } from '../../scripts/scripts.js';
+import { readBlockConfig, decorateMain, loadBlocks } from '../../scripts/scripts.js';
 
 /**
  * loads and decorates the footer
@@ -12,8 +12,10 @@ export default async function decorate(block) {
   const footerPath = cfg.footer || '/footer';
   const resp = await fetch(`${footerPath}.plain.html`);
   const html = await resp.text();
+  const footerFragment = document.createRange().createContextualFragment(html);
   const footer = document.createElement('div');
-  footer.innerHTML = html;
-  await decorateIcons(footer);
+  footer.append(footerFragment);
+  decorateMain(footer);
+  await loadBlocks(footer);
   block.append(footer);
 }

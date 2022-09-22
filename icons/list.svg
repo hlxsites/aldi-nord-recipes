@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 25" id="list">
+    <g transform="translate(5747 7517)">
+        <g>
+            <rect x="-5740.8" y="-7510.4" class="st0" width="17.5" height="2" />
+        </g>
+        <g>
+            <rect x="-5740.8" y="-7505.4" class="st0" width="17.5" height="2" />
+        </g>
+        <g>
+            <rect x="-5740.8" y="-7500.4" class="st0" width="17.5" height="2" />
+        </g>
+        <g>
+            <path class="st0" d="M-5717-7492h-30v-25h30V-7492z M-5745-7494h26v-21h-26V-7494z" />
+        </g>
+    </g>
+</svg>
