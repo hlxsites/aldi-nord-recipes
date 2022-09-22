@@ -5,10 +5,10 @@ export default function decorate(block) {
     const anchor = row.children[1].children[0].getAttribute('href');
     const title = row.children[0].innerHTML;
     const a = document.createElement('a');
-    a.setAttribute('class', 'tocButton');
+    a.setAttribute('class', 'toc-button');
     a.setAttribute('href', anchor);
     const span = document.createElement('span');
-    span.setAttribute('class', 'tocTitle');
+    span.setAttribute('class', 'toc-title');
     span.innerText = title;
     a.append(span);
     flexDiv.append(a);

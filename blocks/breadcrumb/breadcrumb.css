@@ -5,6 +5,7 @@
     text-transform: uppercase;
     white-space: nowrap;
 }
+
 .breadcrumb ul {
     display: flex;
     list-style: none;

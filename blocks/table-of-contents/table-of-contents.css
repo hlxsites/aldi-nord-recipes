@@ -2,7 +2,7 @@
     display:flex;
 }
 
-.table-of-contents .tocButton {
+.table-of-contents .toc-button {
     background-color: transparent;
     border: 1px solid #5c6a82;
     border-radius: 16px;
@@ -10,11 +10,11 @@
     padding: 0 16px;
 }
 
-.table-of-contents .tocButton:not(:last-child) {
+.table-of-contents .toc-button:not(:last-child) {
     margin-right: 8px;
 }
 
-.table-of-contents .tocTitle {
+.table-of-contents .toc-title {
     margin: 5px;
     font-size: .875rem;
     display: inline-block;
