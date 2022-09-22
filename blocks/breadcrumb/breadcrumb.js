@@ -5,20 +5,30 @@ export default function decorate(block) {
 
     let paths = document.location.pathname.split('/');
     console.log(paths)
-    // replace first item, /, with home text
-    paths[0] = "startseite"
-    let href = "";
+    
     let ul = document.createElement('ul');
+
+    // DEMO: we have no homepage, rezepte is the root page
+    paths.shift();
+    paths[0] = "rezepte"
+    let li = document.createElement('li')
+    let a = document.createElement('a')
+    a.append("Startseite");
+    a.setAttribute("href","/")
+    li.append(a);
+    ul.append(li);
+
     // go through the path segments
+    let href = "";
     paths.forEach((element, i) => {
         let li = document.createElement('li');
 
         // arrow icon, unless root
-        if (i != 0) {
+     
             let span = document.createElement('span');
             span.setAttribute("class", "icon icon-arrow-right");
             li.append(span);
-        }
+        
 
         // add link, if not page itself
         if (i !== paths.length -1) {
