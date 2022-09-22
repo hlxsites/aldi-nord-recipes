@@ -10,6 +10,19 @@
  * governing permissions and limitations under the License.
  */
 
+
+@font-face {
+  font-family: FFDINWebProBold;
+  src: url("/fonts/DIN\ Bold.ttf") format('ttf');
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: FFDINWebPro;
+  src: url("/fonts/DIN.ttf") format('ttf');
+  font-weight: 100;
+}
+
  :root {
   /* colors */
   --link-color: #035fe6;
@@ -20,10 +33,10 @@
   --text-color: #000;
 
   /* fonts */
-  --body-font-family: 'helvetica neue', helvetica, ubuntu, roboto, noto, sans-serif;
+  --body-font-family: FFDINWebPro,Arial,sans-serif;
   --heading-font-family: var(--body-font-family);
-  --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
+  
   /* body sizes */
   --body-font-size-m: 22px;
   --body-font-size-s: 18px;
