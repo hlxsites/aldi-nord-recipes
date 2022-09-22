@@ -99,7 +99,7 @@ export default async function decorate(block) {
   block.innerHTML = '';
   const logoContainer = headerFragment.querySelector('.header-tools-logo');
   logoContainer.appendChild(logo);
-  logoContainer.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '80' }])));
+  logoContainer.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '80', height: '84' }])));
 
   block.appendChild(headerFragment);
   decorateIcons(block);
