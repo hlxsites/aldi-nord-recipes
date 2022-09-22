@@ -641,6 +641,23 @@ function getRandomVariant(config) {
 }
 
 /**
+ * Replaces element with content from path
+ * @param {string} path
+ * @param {HTMLElement} element
+ */
+ async function replaceInner(path, element) {
+  const plainPath = `${path}.plain.html`;
+  try {
+    const resp = await fetch(plainPath);
+    const html = await resp.text();
+    element.innerHTML = html;
+  } catch (e) {
+    console.log(`error loading experiment content: ${plainPath}`, e);
+  }
+  return null;
+}
+
+/**
  * checks if a test is active on this page and if so executes the test
  */
  async function decorateExperiment() {
