@@ -23,11 +23,13 @@
   border-radius: 32px; 
   background-color: #888;
   color: #eee;
+  margin: 0;
   padding: 16px 32px;
   cursor: pointer;
   display: flex;
   align-items: center;
   position: relative;
+  font-size: inherit;
 }
 
 .hlx-badge .hlx-open {
@@ -146,61 +148,10 @@
 
 /* Overlay on sidekick if it is present */
 
-.hlx-preview-overlay-sidekick {
-  bottom: auto;
-  right: 224px;
-  top: 10px;
-  font-size: 14px;
-  font-weight: normal;
-  z-index: 10000000;
-}
-
-.hlx-preview-overlay-sidekick .hlx-badge {
-  background: none;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  padding: 5px 8px;
-  color: #dedede;
-  line-height: 1.2;
-}
-
-.hlx-preview-overlay-sidekick .hlx-badge:hover {
-  background-color: #909090;
-  color: #303030;
-}
-
-.hlx-preview-overlay-sidekick .hlx-experiment-status-active {
-  background-color: #280;
-}
-
-.hlx-preview-overlay-sidekick .hlx-experiment-status-active:hover {
-  background-color: #280;
-  color: #dedede;
-}
-
-.hlx-preview-overlay-sidekick .hlx-open {
-  border: none;
-  margin-left: 0;
-  height: auto;
-  width: 12px;
-}
-
-.hlx-preview-overlay-sidekick .hlx-open::after {
-  position: relative;
-  transform: rotate(135deg);
-  border-top: 1px solid;
-  border-right: 1px solid;
-  width: 7px;
-  height: 7px;
-  bottom: 2px;
-  left: 0;
-  margin-left: 5px;
-}
-
 .hlx-preview-overlay-sidekick .hlx-popup {
-  top: 58px;
+  position: fixed;
+  top: 68px;
   bottom: auto;
-  right: -32px;
 }
 
 .hlx-preview-overlay-sidekick .hlx-popup::before {
