@@ -200,7 +200,7 @@
 .hlx-preview-overlay-sidekick .hlx-popup {
   top: 58px;
   bottom: auto;
-  right: -22px;
+  right: -32px;
 }
 
 .hlx-preview-overlay-sidekick .hlx-popup::before {
