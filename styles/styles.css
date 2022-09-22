@@ -24,6 +24,7 @@
   font-weight: bold;
   font-display: swap;
 }
+
  :root {
   /* colors */
   --link-color: #172b4d;
@@ -34,7 +35,7 @@
   --text-color: #172b4d;
 
   /* fonts */
-  --body-font-family: FFDINWebPro,Arial,sans-serif;
+  --body-font-family: ffdinwebpro,arial,sans-serif;
   --heading-font-family: var(--body-font-family);
 
   
@@ -88,7 +89,7 @@ h2 {
   font-family: FFDINWebProBold,Arial,sans-serif;
   margin-bottom: 10px;
   font-size: 1.875rem;
-  line-height: 1.23333;
+  line-height: 1.2333;
 }
 
 p, dl, ol, ul, pre, blockquote {
