@@ -18,30 +18,30 @@ export default function decorate(block) {
   // go through the path segments
   let href = '';
   paths.forEach((element, i) => {
-    const li = document.createElement('li');
+    const liEntry = document.createElement('li');
 
     // arrow icon, unless root
     const span = document.createElement('span');
     span.setAttribute('class', 'icon icon-arrow-right');
-    li.append(span);
+    liEntry.append(span);
 
     // add link, if not page itself
     if (i !== paths.length - 1) {
-      let a = document.createElement('a');
-      if (i != 0) {
-        href += "/" + element;
-        a.setAttribute('href', href + '.html');
+      const link = document.createElement('a');
+      if (i !== 0) {
+        href += '/' + element;
+        link.setAttribute('href', href + '.html');
       } else {
-        a.setAttribute('href', '/');
+        link.setAttribute('href', '/');
       }
 
-      a.innerText = element;
-      li.append(a);
+      link.innerText = element;
+      liEntry.append(a);
     } else {
-      li.append(element);
+      liEntry.append(element);
     }
 
-    ul.append(li);
+    ul.append(liEntry);
   });
   block.append(ul);
   decorateIcons(block);
