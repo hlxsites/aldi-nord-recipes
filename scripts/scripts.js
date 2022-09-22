@@ -524,7 +524,7 @@ export function parseExperimentConfig(json) {
     json.settings.data.forEach((row) => {
       config[toCamelCase(row.Name)] = row.Value;
     });
-    
+
     config.variantNames = [];
     config.variants = {};
     json.experiences.data.forEach((row) => {
@@ -534,11 +534,11 @@ export function parseExperimentConfig(json) {
         percentageSplit: row.Split,
         pages: [new URL(row.Page.trim()).pathname],
         label: row.Label,
-      }
+      };
     });
     return config;
   } catch (e) {
-    console.log(`error loading experiment manifest: ${path}`, e);
+    console.log('error parsing experiment config:', e);
   }
   return null;
 }
@@ -564,7 +564,7 @@ export async function getExperimentConfig(experimentId) {
   try {
     const resp = await fetch(path);
     if (!resp.ok) {
-      console.log(`error loading experiment config:`, resp);
+      console.log('error loading experiment config:', resp);
       return null;
     }
     const json = await resp.json();
@@ -654,8 +654,8 @@ async function replaceInner(path, element) {
   try {
     const resp = await fetch(plainPath);
     if (!resp.ok) {
-      console.log(`error loading experiment content:`, resp);
-      return;
+      console.log('error loading experiment content:', resp);
+      return null;
     }
     const html = await resp.text();
     element.innerHTML = html;
@@ -678,7 +678,7 @@ async function decorateExperiment() {
     const usp = new URLSearchParams(window.location.search);
     const [forcedExperiment, forcedVariant] = usp.has('experiment') ? usp.get('experiment').split('/') : [];
     console.debug('experiment', forcedExperiment || experiment, forcedVariant || '');
-    
+
     const config = await getExperimentConfig(experiment);
     console.debug(config);
     if (toCamelCase(config.status) !== 'active' && !forcedExperiment) {
