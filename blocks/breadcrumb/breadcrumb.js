@@ -29,8 +29,8 @@ export default function decorate(block) {
     if (i !== paths.length - 1) {
       const link = document.createElement('a');
       if (i !== 0) {
-        href += '/' + element;
-        link.setAttribute('href', href + '.html');
+        href += `/${element}`;
+        link.setAttribute('href', `${href}.html`);
       } else {
         link.setAttribute('href', '/');
       }
