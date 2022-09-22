@@ -490,7 +490,7 @@ function decorateTemplateAndTheme() {
  * Gets the experiment name, if any for the page based on env, useragent, queyr params
  * @returns {string} experimentid
  */
- export function getExperiment() {
+export function getExperiment() {
   // Non-prod website get default content
   // if (!window.location.host.includes('.hlx.live')) {
   //   return null;
@@ -518,7 +518,7 @@ function decorateTemplateAndTheme() {
       variantNames: [],
     };
  */
- export function parseExperimentConfig(json) {
+export function parseExperimentConfig(json) {
   const config = {};
   try {
     json.settings.data.forEach((row) => {
@@ -559,7 +559,7 @@ function decorateTemplateAndTheme() {
  * @param {string} experimentId
  * @returns {object} containing the experiment manifest
  */
- export async function getExperimentConfig(experimentId) {
+export async function getExperimentConfig(experimentId) {
   const path = `/experiments/${experimentId}/franklin-experiment.json`;
   try {
     const resp = await fetch(path);
@@ -583,7 +583,7 @@ function decorateTemplateAndTheme() {
  * @param {string} audience
  * @return {boolean} is member of this audience
  */
- function isValidAudience(audience) {
+function isValidAudience(audience) {
   if (audience === 'mobile') {
     return window.innerWidth < 600;
   }
@@ -610,7 +610,7 @@ function getRandomVariant(config) {
  * @param {string} experimentId
  * @param {variant} variant
  */
- function saveSelectedExperimentVariant(experimentId, variant) {
+function saveSelectedExperimentVariant(experimentId, variant) {
   const experimentsStr = localStorage.getItem('hlx-experiments');
   const experiments = experimentsStr ? JSON.parse(experimentsStr) : {};
 
@@ -634,7 +634,7 @@ function getRandomVariant(config) {
  * @return {string} assigned variant or empty string if none set
  */
 
- function getSavedExperimentVariant(experimentId) {
+function getSavedExperimentVariant(experimentId) {
   const experimentsStr = localStorage.getItem('hlx-experiments');
   if (!experimentsStr) {
     return null;
@@ -649,7 +649,7 @@ function getRandomVariant(config) {
  * @param {string} path
  * @param {HTMLElement} element
  */
- async function replaceInner(path, element) {
+async function replaceInner(path, element) {
   const plainPath = `${path}.plain.html`;
   try {
     const resp = await fetch(plainPath);
@@ -668,7 +668,7 @@ function getRandomVariant(config) {
 /**
  * checks if a test is active on this page and if so executes the test
  */
- async function decorateExperiment() {
+async function decorateExperiment() {
   try {
     const experiment = getExperiment();
     if (!experiment) {
