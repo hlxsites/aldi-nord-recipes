@@ -9,6 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+/* eslint-disable no-console */
 
 /**
  * log RUM if part of the sample.
@@ -809,6 +810,7 @@ async function loadPage(doc) {
   loadDelayed(doc);
 
   if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost')) {
+    // eslint-disable-next-line import/no-cycle
     import('./experiment-preview.js');
   }
 }

@@ -9,7 +9,8 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
+/* eslint-disable no-console */
+// eslint-disable-next-line import/no-cycle
 import {
   loadCSS,
   toClassName,
@@ -119,7 +120,7 @@ async function createPreviewOverlay() {
   overlay.className = 'hlx-preview-overlay';
 
   if (sidekick) {
-    overlay.classList.add('hlx-preview-overlay--sidekick');
+    overlay.classList.add('hlx-preview-overlay-sidekick');
   }
 
   const variantSelector = await getExperimentVariantSelector();

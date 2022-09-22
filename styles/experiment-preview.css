@@ -40,6 +40,7 @@
   border-radius: 100px;
   margin-left: 16px;
 }
+
 .hlx-badge .hlx-open::after {
   content: "";
   display: block;
@@ -82,10 +83,9 @@
 .hlx-popup .hlx-popup-header {
   display: flex;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 24px 16px;
   background-color: #222;
   border-radius: 16px 16px 0 0;
-  padding: 24px 16px;
 }
 
 .hlx-popup h4, .hlx-popup h5 {
@@ -144,10 +144,9 @@
   flex: 0 0 auto;
 }
 
-
-
 /* Overlay on sidekick if it is present */
-.hlx-preview-overlay--sidekick {
+
+.hlx-preview-overlay-sidekick {
   bottom: auto;
   right: 224px;
   top: 10px;
@@ -156,7 +155,7 @@
   z-index: 10000000;
 }
 
-.hlx-preview-overlay--sidekick .hlx-badge {
+.hlx-preview-overlay-sidekick .hlx-badge {
   background: none;
   border: 1px solid transparent;
   border-radius: 6px;
@@ -165,28 +164,28 @@
   line-height: 1.2;
 }
 
-.hlx-preview-overlay--sidekick .hlx-badge:hover {
+.hlx-preview-overlay-sidekick .hlx-badge:hover {
   background-color: #909090;
   color: #303030;
 }
 
-.hlx-preview-overlay--sidekick .hlx-experiment-status-active {
+.hlx-preview-overlay-sidekick .hlx-experiment-status-active {
   background-color: #280;
 }
 
-.hlx-preview-overlay--sidekick .hlx-experiment-status-active:hover {
+.hlx-preview-overlay-sidekick .hlx-experiment-status-active:hover {
   background-color: #280;
   color: #dedede;
 }
 
-.hlx-preview-overlay--sidekick .hlx-open {
+.hlx-preview-overlay-sidekick .hlx-open {
   border: none;
   margin-left: 0;
   height: auto;
   width: 12px;
 }
 
-.hlx-preview-overlay--sidekick .hlx-open::after {
+.hlx-preview-overlay-sidekick .hlx-open::after {
   position: relative;
   transform: rotate(135deg);
   border-top: 1px solid;
@@ -198,13 +197,13 @@
   margin-left: 5px;
 }
 
-.hlx-preview-overlay--sidekick .hlx-popup {
+.hlx-preview-overlay-sidekick .hlx-popup {
   top: 58px;
   bottom: auto;
   right: -22px;
 }
 
-.hlx-preview-overlay--sidekick .hlx-popup::before {
+.hlx-preview-overlay-sidekick .hlx-popup::before {
   top: -15px;
   bottom: auto;
   border-top: none;
