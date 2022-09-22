@@ -1,0 +1,45 @@
+.socialmedia-wrapper {
+    background-color: #172b4d;
+}
+
+.socialmedia, .socialmedia a {
+    color: #fff;
+    transition: color .3s, fill .3s;
+    fill: #fff;
+    line-height: 22px;
+}
+
+.socialmedia a:hover {
+    color: #a1a8b1;
+    fill: #a1a8b1;
+}
+
+.socialmedia h3 {
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.socialmedia .icon, .socialmedia .icon > svg {
+    width: 22px;
+    height: 22px;
+}
+
+.socialmedia > div > div {
+    height: 90px;
+    display: flex;
+    align-items: center;
+}
+
+.socialmedia ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.socialmedia ul li {
+    display: block;
+    float: left;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-bottom: -4px;
+}
