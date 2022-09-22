@@ -563,6 +563,10 @@ function decorateTemplateAndTheme() {
   const path = `/experiments/${experimentId}/franklin-experiment.json`;
   try {
     const resp = await fetch(path);
+    if (!resp.ok) {
+      console.log(`error loading experiment config:`, resp);
+      return null;
+    }
     const json = await resp.json();
     const config = parseExperimentConfig(json);
     config.id = experimentId;
@@ -649,6 +653,10 @@ function getRandomVariant(config) {
   const plainPath = `${path}.plain.html`;
   try {
     const resp = await fetch(plainPath);
+    if (!resp.ok) {
+      console.log(`error loading experiment content:`, resp);
+      return;
+    }
     const html = await resp.text();
     element.innerHTML = html;
   } catch (e) {
