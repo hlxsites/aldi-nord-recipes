@@ -1,3 +1,112 @@
 .newsletter-wrapper {
     background-color: #172b4d;
 }
+
+.newsletter {
+    color: #fff;
+    font-size: 16px;
+    padding: 37px 0;
+}
+
+.newsletter h3 {
+    font-size: 29px;
+}
+
+.newsletter > div {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.newsletter .newsletter-apps, .newsletter .newsletter-form {
+    padding: 0 8px;
+    width: 100%;
+}
+
+.newsletter .newsletter-apps h3 {
+    margin-bottom: 8px;
+}
+
+.newsletter .newsletter-apps-content {
+    display: flex;
+}
+
+.newsletter .newsletter-apps-content ul img {
+    height: 40px;
+    width: auto;
+}
+
+.newsletter .newsletter-apps-content > div:first-child picture > img {
+    width: 80px;
+    height: 80px;
+    margin-right: 22px;
+}
+
+.newsletter .newsletter-apps-content ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 14px;
+}
+
+.newsletter .newsletter-apps-content ul li {
+    display: inline;
+    margin-right: 22px;
+    height: 40px;
+}
+
+.newsletter .newsletter-apps a {
+    text-decoration: none;
+}
+
+.newsletter .newsletter-form h3 {
+    margin-bottom: 11px;
+}
+
+.newsletter .newsletter-form p {
+    margin-bottom: 16px;
+}
+
+.newsletter .newsletter-form label {
+    display: none;
+}
+
+.newsletter .newsletter-form form {
+    display: flex;
+    width: 100%;
+}
+
+.newsletter .newsletter-form input {
+    background-color: #f2f5f8;
+    border: 1px solid #f2f5f8;
+    display: block;
+    padding: 8px;
+    transition: border-color .3s;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 5px;
+    height: 32px;
+    line-height: 1.4;
+    color: #172b4d;
+}
+
+.newsletter .newsletter-form button {
+    cursor: pointer;
+    outline: 0;
+    margin: 0;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 3px 14px 0;
+    text-align: left;
+    text-decoration: none;
+    text-transform: uppercase;
+    vertical-align: middle;
+    background-color: #2490d7;
+    border-color: #2490d7;
+    color: #fff;
+    transition: background .3s,color .3s;
+    flex: 1 0 auto;
+    margin-bottom: 0;
+    margin-left: 1rem;
+}
