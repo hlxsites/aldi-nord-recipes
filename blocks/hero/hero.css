@@ -14,27 +14,19 @@ main .hero {
     min-height: 300px;
 }
 
-main .hero h1 {
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    color: white;
-}
-
-
-main .hero picture {
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    object-fit: cover;
-    box-sizing: border-box;
-}
 
 main .hero img {
     object-fit: cover;
-    width: 100%;
+    box-sizing: border-box;    
+    display: block;
+    border: 0;
+    bottom: 0;
     height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    transition: opacity .3s;
+    opacity: 1
 }
+
