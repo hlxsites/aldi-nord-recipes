@@ -1,4 +1,4 @@
-import { readBlockConfig, fetchIndex } from '../../scripts/scripts.js';
+import { readBlockConfig, createOptimizedPicture, fetchIndex } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const cfg = readBlockConfig(block);
@@ -18,7 +18,9 @@ export default async function decorate(block) {
     const card = document.createRange().createContextualFragment(`<div class="carousel-item">
         <a href="${item.path}">
           <div class="carousel-item-image">
-            <img src="${item.thumbnail}" alt="${item.title}" />
+            <picture>
+              <img src="${item.thumbnail}" alt="${item.title}" />
+            </picture>
           </div>
           <div class="carousel-item-title">
             ${item.name}
@@ -28,6 +30,8 @@ export default async function decorate(block) {
 
     carousel.firstChild.appendChild(card);
   });
+
+  carousel.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '158' }])));
 
   block.appendChild(carousel);
 }
