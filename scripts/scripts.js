@@ -709,3 +709,24 @@ function loadDelayed() {
   window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
 }
+
+export async function fetchIndex(indexFile, pageSize = 500) {
+  window.index = window.index || {};
+  window.index[indexFile] = window.index[indexFile] || {
+    data: [],
+    offset: 0,
+    complete: false,
+  };
+  if (window.index[indexFile].complete) {
+    return window.index[indexFile];
+  }
+
+  const index = window.index[indexFile];
+  const resp = await fetch(`/${indexFile}.json?limit=${pageSize}&offset=${index.offset}`);
+  const json = await resp.json();
+  const complete = (json.limit + json.offset) === json.total;
+  index.data.push(...json.data);
+  index.complete = complete;
+  index.offset = json.offset + pageSize;
+  return index;
+}
