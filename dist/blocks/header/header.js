@@ -1,14 +1,11 @@
-import { decorateIcons, createOptimizedPicture } from '../../scripts/scripts.js';
-
+import { decorateIcons, createOptimizedPicture } from '../../../scripts/scripts.js';
 export default async function decorate(block) {
   const resp = await fetch('/header.plain.html');
   const html = await resp.text();
-  const headerSource = document.createRange().createContextualFragment(html);
+  const headerSource = document.createRange().createContextualFragment(html); // Extract logo from header
 
-  // Extract logo from header
-  const logo = headerSource.querySelector('picture');
+  const logo = headerSource.querySelector('picture'); // Hardcode complete header
 
-  // Hardcode complete header
   const headerFragment = document.createRange().createContextualFragment(`
     <div class="header-meta-wrapper">
       <div class="header-meta">
@@ -95,12 +92,13 @@ export default async function decorate(block) {
       </ul>
     </div>
   </div>`);
-
   block.innerHTML = '';
   const logoContainer = headerFragment.querySelector('.header-tools-logo');
   logoContainer.appendChild(logo);
-  logoContainer.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '80', height: '84' }])));
-
+  logoContainer.querySelectorAll('img').forEach(img => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{
+    width: '80',
+    height: '84'
+  }])));
   block.appendChild(headerFragment);
   decorateIcons(block);
 }
