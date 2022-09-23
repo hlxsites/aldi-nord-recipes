@@ -614,6 +614,9 @@ window.addEventListener('error', (event) => {
 loadPage(document);
 
 function buildHeroBlock(main) {
+  // Only build hero block for main content
+  if (main.tagName !== 'MAIN') return;
+
   // TODO: Check for template, if recipe template, make sure h1 is before hero image
   const picture = main.querySelector('picture');
   if (picture) {
