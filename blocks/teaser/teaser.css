@@ -15,14 +15,6 @@
   box-sizing: border-box;
 }
 
-.teaser-caption-left {
-  left: auto;
-}
-
-.teaser-caption-right {
-  right: auto;
-}
-
 .teaser .teaser-caption-right,
 .teaser-caption-left {
   bottom: 0;
@@ -38,21 +30,28 @@
   padding: 0;
 }
 
+.teaser-caption-left {
+  left: auto;
+}
+
+.teaser-caption-right {
+  right: auto;
+}
 .teaser h2 {
   font-size: 1.875rem;
   line-height: 42px;
   padding: 24px;
-  background-color: rgba(255, 255, 255, .8);
+  background-color: rgba(255 255 255 / 80%);
   font-family: FFDINWebPro, Arial, sans-serif;
   margin: 0;
 }
 
 .teaser .subhead {
-  padding: 0px 24px 24px 24px;
-  background-color: rgba(255, 255, 255, 80%);
+  padding: 0 24px 24px;
+  background-color: rgba(255 255 255 / 80%);
   max-width: 80%;
   padding-bottom: 24px;
-  margin-top: 0px;
+  margin-top: 0;
   margin-bottom: 24px;
 }
 
