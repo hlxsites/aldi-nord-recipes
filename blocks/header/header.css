@@ -24,6 +24,7 @@ header .header-meta {
   line-height: 31px;
   text-transform: uppercase;
   color: #5c6a82;
+  font-family: var(--bold-font-family);
 }
 
 header .header-meta a {
@@ -126,6 +127,7 @@ header .header-tools .header-tools-cart {
 header .header-navigation a {
   display: inline-flex;
   color: #172b4d;
+  font-family: var(--bold-font-family);
   text-decoration: none;
   text-transform: uppercase;
   transition: fill .3s, color .3s;
@@ -139,6 +141,8 @@ header .header-tools .header-tools-cart a {
   font-size: 14px;
   text-transform: uppercase;
   line-height: 20px;
+  font-family: var(--bold-font-family);
+  transition: fill .3s, color .3s;
 }
 
 header .header-tools .header-tools-storepicker .icon svg,
@@ -148,14 +152,14 @@ header .header-tools .header-tools-cart .icon svg {
   fill: currentcolor;
   display: inline-block;
   position: relative;
-  bottom: -16px;
+  bottom: -4px;
 }
 
 header .header-navigation {
   font-size: 14px;
 }
 
-header .header-navigation a:hover {
+header .header-navigation a:hover, header .header-tools .header-tools-storepicker a:hover, header .header-tools .header-tools-cart a:hover {
   color: #2490d7;
 }
 

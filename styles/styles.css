@@ -21,7 +21,7 @@
 @font-face {
   font-family: FFDINWebProBold;
   src: url("/fonts/DINBold.ttf") format('truetype');
-  font-weight: bold;
+  font-weight: 100;
   font-display: swap;
 }
 
@@ -36,6 +36,7 @@
 
   /* fonts */
   --body-font-family: ffdinwebpro,arial,sans-serif;
+  --bold-font-family: ffdinwebprobold,arial,sans-serif;
   --heading-font-family: var(--body-font-family);
 
   
@@ -76,17 +77,18 @@ header {
   height: var(--nav-height);
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--bold-font-family);
+  font-weight: 100;
+}
+
 h1 {
-  font-weight: bold;
-  font-family: FFDINWebProBold,Arial,sans-serif;
   font-size: 2.5rem;
   line-height: 1.175;
   margin-bottom: 20px;
 }
 
 h2 {
-  font-weight: bold;
-  font-family: FFDINWebProBold,Arial,sans-serif;
   margin-bottom: 10px;
   font-size: 1.875rem;
   line-height: 1.2333;
@@ -178,7 +180,7 @@ main input:hover {
 }
 
 main .section {
-  padding: 64px 16px;
+  padding: 28px 16px;
 }
 
 main pre {
@@ -221,7 +223,7 @@ main img {
 
 @media (min-width: 600px) {
   main .section {
-    padding: 64px 32px;
+    padding: 28px 32px;
   }  
 }
 

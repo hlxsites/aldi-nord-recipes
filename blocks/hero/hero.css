@@ -11,13 +11,13 @@ main .hero-container {
 main .hero {
     position: relative;
     padding: 32px;
-    min-height: 300px;
+    height: 192px;
 }
 
 
 main .hero img {
     object-fit: cover;
-    box-sizing: border-box;    
+    box-sizing: border-box;
     display: block;
     border: 0;
     bottom: 0;

@@ -10,6 +10,7 @@
 
 .newsletter h3 {
     font-size: 29px;
+    font-family: var(--bold-font-family);
 }
 
 .newsletter > div {
