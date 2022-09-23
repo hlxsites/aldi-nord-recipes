@@ -4,7 +4,7 @@ version: 1
 indices:
   ernaehrungsform:
     include:
-      - '/ernaehrungsform/**'
+      - '/rezepte/ernaehrungsform/**'
     target: /ernaehrungsform-index
     properties:
       name:
@@ -29,7 +29,7 @@ indices:
           attribute(el, 'content')
   kategorien:
     include:
-      - '/kategorien/**'
+      - '/rezepte/kategorien/**'
     target: /kategorie-index
     properties:
       name:
@@ -55,6 +55,9 @@ indices:
   rezepte:
     include:
       - '/rezepte/**'
+    exclude:
+      - '/rezepte/kategorien/**'
+      - '/rezepte/ernaehrungsform/**'
     target: /rezept-index
     properties:
       title:
