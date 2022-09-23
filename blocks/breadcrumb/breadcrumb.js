@@ -3,11 +3,10 @@ import { decorateIcons } from '../../scripts/scripts.js';
 export default function decorate(block) {
   block.textContent = '';
 
-  const paths = document.location.pathname.split('/');
+  const paths = document.location.pathname.split('/')
+    .filter((p) => p);
+
   const ul = document.createElement('ul');
-  // DEMO: we have no homepage, rezepte is the root page
-  paths.shift();
-  paths[0] = 'rezepte';
   const li = document.createElement('li');
   const a = document.createElement('a');
   a.append('Startseite');
@@ -26,21 +25,19 @@ export default function decorate(block) {
     liEntry.append(span);
 
     // add link, if not page itself
-    if (i !== paths.length - 1) {
-      const link = document.createElement('a');
-      if (i !== 0) {
-        href += `/${element}`;
-        link.setAttribute('href', `${href}.html`);
-      } else {
-        link.setAttribute('href', '/');
-      }
-
-      link.innerText = element;
-      liEntry.append(a);
+    if (i === paths.length - 1) {
+      // Take page name from metadata, if available
+      const name = document.querySelector('head > meta[name="name"]').getAttribute('content') || element;
+      liEntry.append(name.replace('ernaehrungsform', 'ernährungsform'));
     } else {
-      liEntry.append(element);
-    }
+      const link = document.createElement('a');
 
+      href += `/${element}`;
+      link.setAttribute('href', href);
+
+      link.innerText = element.replace('ernaehrungsform', 'ernährungsform');
+      liEntry.append(link);
+    }
     ul.append(liEntry);
   });
   block.append(ul);
