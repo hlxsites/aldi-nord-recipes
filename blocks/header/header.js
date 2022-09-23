@@ -1,7 +1,7 @@
 import { decorateIcons, createOptimizedPicture } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
-  const resp = await fetch('header.plain.html');
+  const resp = await fetch('/header.plain.html');
   const html = await resp.text();
   const headerSource = document.createRange().createContextualFragment(html);
 
