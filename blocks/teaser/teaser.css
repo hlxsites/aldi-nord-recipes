@@ -15,6 +15,10 @@
   box-sizing: border-box;
 }
 
+.teaser-caption-right {
+  right: auto;
+}
+
 .teaser .teaser-caption-right,
 .teaser-caption-left {
   bottom: 0;
@@ -34,9 +38,6 @@
   left: auto;
 }
 
-.teaser-caption-right {
-  right: auto;
-}
 .teaser h2 {
   font-size: 1.875rem;
   line-height: 42px;
