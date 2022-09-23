@@ -17,6 +17,7 @@
 .socialmedia h3 {
     font-size: 20px;
     line-height: 24px;
+    font-family: var(--bold-font-family);
 }
 
 .socialmedia .icon, .socialmedia .icon > svg {

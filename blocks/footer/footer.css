@@ -41,6 +41,7 @@ footer .columns li {
 footer .columns h3 {
   font-size: 29px;
   margin-bottom: 16px;
+  font-family: var(--bold-font-family);
 }
 
 footer .columns a {

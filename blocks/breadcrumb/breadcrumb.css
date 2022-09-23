@@ -4,18 +4,25 @@
     font-size: .625rem;
     text-transform: uppercase;
     white-space: nowrap;
+    font-family: var(--bold-font-family);
 }
 
 .breadcrumb ul {
     display: flex;
     list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.breadcrumb .icon-arrow-right {
+    margin: 0 4px;
 }
 
 .breadcrumb .icon-arrow-right svg  {
     font-size: var(--body-font-size-m);
     color: #172b4d;
+    fill: currentcolor;
     height: 8px;
-    margin: 0 2px;
     width: 8px;
 }
 

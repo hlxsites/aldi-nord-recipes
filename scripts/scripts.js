@@ -614,12 +614,14 @@ window.addEventListener('error', (event) => {
 loadPage(document);
 
 function buildHeroBlock(main) {
-  const h1 = main.querySelector('h1');
+  // Only build hero block for main content
+  if (main.tagName !== 'MAIN') return;
+
+  // TODO: Check for template, if recipe template, make sure h1 is before hero image
   const picture = main.querySelector('picture');
-  // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+  if (picture) {
     const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
+    section.append(buildBlock('hero', { elems: [picture] }));
     main.prepend(section);
   }
 }
@@ -660,7 +662,7 @@ export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
-  // TODO buildAutoBlocks(main);
+  buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
 }

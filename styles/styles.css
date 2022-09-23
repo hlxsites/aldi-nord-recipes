@@ -21,7 +21,7 @@
 @font-face {
   font-family: FFDINWebProBold;
   src: url("/fonts/DINBold.ttf") format('truetype');
-  font-weight: bold;
+  font-weight: 100;
   font-display: swap;
 }
 
@@ -36,6 +36,7 @@
 
   /* fonts */
   --body-font-family: ffdinwebpro,arial,sans-serif;
+  --bold-font-family: ffdinwebprobold,arial,sans-serif;
   --heading-font-family: var(--body-font-family);
 
   
@@ -76,17 +77,18 @@ header {
   height: var(--nav-height);
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--bold-font-family);
+  font-weight: 100;
+}
+
 h1 {
-  font-weight: bold;
-  font-family: FFDINWebProBold,Arial,sans-serif;
   font-size: 2.5rem;
   line-height: 1.175;
   margin-bottom: 20px;
 }
 
 h2 {
-  font-weight: bold;
-  font-family: FFDINWebProBold,Arial,sans-serif;
   margin-bottom: 10px;
   font-size: 1.875rem;
   line-height: 1.2333;
@@ -123,27 +125,30 @@ pre {
 /* buttons */
 
 a.button:any-link, button {
-  font-family: var(--font-family-body);
-  display: inline-block;
-  box-sizing: border-box;
+  border-color: #d5dce6;
+  color: #2490d7;
+  font-family: var(--bold-font-family);
+  align-items: center;
+  background: 0 0;
+  border: 1px solid #d5dce6;
+  border-radius: 5px;
+  display: inline-flex;
+  font-size: .875rem;
+  justify-content: center;
+  line-height: 1.22;
+  min-height: 50px;
+  padding: 0 14px;
+  text-align: left;
   text-decoration: none;
-  border: 2px solid transparent;
-  padding: 5px 30px;
-  text-align: center;
-  font-style: normal; 
-  font-weight: 600;
-  cursor: pointer;
-  color: var(--background-color);
-  background-color: var(--link-color);
-  margin: 16px 0;
-  white-space: nowrap;
-  overflow: hidden;
+  text-transform: uppercase;
+  vertical-align: middle;
   text-overflow: ellipsis;
-  border-radius: 30px;
+  transition: border .3s, color .3s;
 }
 
 a.button:hover, a.button:focus, button:hover, button:focus  {
-  background-color: var(--link-hover-color);
+  border-color: #2490d7;
+  color: #2490d7;
   cursor: pointer;
 }
 
@@ -156,7 +161,7 @@ a.button.secondary, button.secondary {
   background-color: unset;
   border: 2px solid currentcolor;
   color: var(--text-color)
-} 
+}
 
 
 main input {
@@ -178,7 +183,7 @@ main input:hover {
 }
 
 main .section {
-  padding: 64px 16px;
+  padding: 28px 16px;
 }
 
 main pre {
@@ -221,7 +226,7 @@ main img {
 
 @media (min-width: 600px) {
   main .section {
-    padding: 64px 32px;
+    padding: 28px 32px;
   }  
 }
 
