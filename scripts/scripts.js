@@ -533,7 +533,7 @@ export function parseExperimentConfig(json) {
       config.variantNames.push(variantName);
       config.variants[variantName] = {
         percentageSplit: row.Split,
-        pages: [new URL(row.Page.trim()).pathname],
+        pages: [new URL(row.Pages.trim()).pathname],
         label: row.Label,
       };
     });

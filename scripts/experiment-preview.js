@@ -142,25 +142,31 @@ async function createPreviewOverlay() {
 
   const sidekick = document.querySelector('helix-sidekick');
 
-  loadCSS('/styles/experiment-preview.css');
+  loadCSS(`${window.hlx.codeBasePath}/styles/experiment-preview.css`);
   const overlay = document.createElement('div');
   overlay.className = 'hlx-preview-overlay';
 
   const popup = getExperimentVariantPopup(config);
-  const button = sidekick
-    ? getExperimentVariantSelectorInSidekick(config)
-    : getExperimentVariantSelectorInOverlay(config);
+  const overlayButton = getExperimentVariantSelectorInOverlay(config);
 
-  if (!button || !popup) {
-    return;
-  }
-
-  registerClickHandler(button, popup, config);
-  if (!sidekick) {
-    overlay.append(button);
-  } else {
+  registerClickHandler(overlayButton, popup, config);
+  if (sidekick) {
+    const sidekickInner = sidekick.shadowRoot.querySelector('.hlx-sk');
+    const sidekickButton = getExperimentVariantSelectorInSidekick(config);
+    registerClickHandler(sidekickButton, popup, config);
     overlay.classList.add('hlx-preview-overlay-sidekick');
+    overlayButton.classList.toggle('hlx-hidden', !sidekickInner.classList.contains('hlx-sk-hidden'));
+    const attrObserver = new MutationObserver((mutations) => {
+      mutations.forEach((m) => {
+        if (m.type === 'attributes' && m.attributeName === 'class') {
+          overlay.classList.toggle('hlx-preview-overlay-sidekick', !m.target.classList.contains('hlx-sk-hidden'));
+          overlayButton.classList.toggle('hlx-hidden', !sidekickInner.classList.contains('hlx-sk-hidden'));
+        }
+      });
+    });
+    attrObserver.observe(sidekickInner, { attributes: true });
   }
+  overlay.append(overlayButton);
   overlay.append(popup);
 
   document.body.append(overlay);
