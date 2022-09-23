@@ -1,10 +1,9 @@
 export default function decorate(block) {
   // get image and caption divs
   let imageDiv = block.children[0].children[0];
-  let captionDiv = block.children[0].children[1];  
+  let captionDiv = block.children[0].children[1];
   // check if left or right
-  if (imageDiv.children[0].tagName !== "PICTURE"){
-    console.log(imageDiv.children[0].tagName)
+  if (imageDiv.children[0].tagName !== 'PICTURE') {
     const tmp = imageDiv;
     imageDiv = captionDiv;
     captionDiv = tmp;
@@ -27,4 +26,3 @@ export default function decorate(block) {
     title.after(headDiv);
   }
 }
-
