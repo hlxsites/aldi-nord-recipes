@@ -125,27 +125,30 @@ pre {
 /* buttons */
 
 a.button:any-link, button {
-  font-family: var(--font-family-body);
-  display: inline-block;
-  box-sizing: border-box;
+  border-color: #d5dce6;
+  color: #2490d7;
+  font-family: var(--bold-font-family);
+  align-items: center;
+  background: 0 0;
+  border: 1px solid #d5dce6;
+  border-radius: 5px;
+  display: inline-flex;
+  font-size: .875rem;
+  justify-content: center;
+  line-height: 1.22;
+  min-height: 50px;
+  padding: 0 14px;
+  text-align: left;
   text-decoration: none;
-  border: 2px solid transparent;
-  padding: 5px 30px;
-  text-align: center;
-  font-style: normal; 
-  font-weight: 600;
-  cursor: pointer;
-  color: var(--background-color);
-  background-color: var(--link-color);
-  margin: 16px 0;
-  white-space: nowrap;
-  overflow: hidden;
+  text-transform: uppercase;
+  vertical-align: middle;
   text-overflow: ellipsis;
-  border-radius: 30px;
+  transition: border .3s, color .3s;
 }
 
 a.button:hover, a.button:focus, button:hover, button:focus  {
-  background-color: var(--link-hover-color);
+  border-color: #2490d7;
+  color: #2490d7;
   cursor: pointer;
 }
 
@@ -158,7 +161,7 @@ a.button.secondary, button.secondary {
   background-color: unset;
   border: 2px solid currentcolor;
   color: var(--text-color)
-} 
+}
 
 
 main input {
