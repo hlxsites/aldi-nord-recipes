@@ -125,25 +125,22 @@ pre {
 /* buttons */
 
 a.button:any-link, button {
-  border-color: #d5dce6;
-  color: #2490d7;
-  font-family: var(--bold-font-family);
+  font-family: FFDINWebProBold,Arial,sans-serif;
   align-items: center;
   background: 0 0;
-  border: 1px solid #d5dce6;
+  border: 1px solid transparent;
   border-radius: 5px;
   display: inline-flex;
   font-size: .875rem;
   justify-content: center;
   line-height: 1.22;
+  margin-bottom: 1rem;
   min-height: 50px;
-  padding: 0 14px;
+  padding: 3px 14px 0;
   text-align: left;
   text-decoration: none;
   text-transform: uppercase;
   vertical-align: middle;
-  text-overflow: ellipsis;
-  transition: border .3s, color .3s;
 }
 
 a.button:hover, a.button:focus, button:hover, button:focus  {
@@ -157,10 +154,16 @@ button:disabled, button:disabled:hover {
   cursor: unset;
 }
 
+a.button.primary, button.primary {
+  border-color: #d5dce6;
+  color: #2490d7;
+  transition: border .3s,color .3s;
+}
+
 a.button.secondary, button.secondary {
-  background-color: unset;
-  border: 2px solid currentcolor;
-  color: var(--text-color)
+    border-color: #d5dce6;
+    color: #2490d7;
+    transition: border .3s,color .3s;
 }
 
 
