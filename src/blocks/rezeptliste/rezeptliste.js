@@ -4,7 +4,7 @@ import { useEffect, useState } from '../../../scripts/hooks.module.js';
 
 const Image = (props) => {
   const {
-    breakpoints = [{ media: '(min-width: 400px)', width: '2000' }, { width: '750' }], src, alt = '', eager = false,
+    breakpoints = [{ media: '(min-width: 400px)', width: '2000' }, { width: '750' }], src, alt = '', eager = false, ...otherProps
   } = props;
 
   const url = new URL(src, window.location.href);
@@ -21,7 +21,7 @@ const Image = (props) => {
     if (i < breakpoints.length - 1) {
       fallbackSources.push(<source media={breakpoint.media} srcSet={`${pathname}?width=${breakpoint.width}&format=${ext}&optimize=medium`} />);
     } else {
-      fallbackSources.push(<img src={`${pathname}?width=${breakpoint.width}&format=${ext}&optimize=medium`} alt={alt} loading={eager ? 'eager' : 'lazy'} />);
+      fallbackSources.push(<img src={`${pathname}?width=${breakpoint.width}&format=${ext}&optimize=medium`} alt={alt} loading={eager ? 'eager' : 'lazy'} {...otherProps} />);
     }
   });
 
@@ -100,7 +100,7 @@ const Recipe = (props) => {
   return (<div className="rezeptliste-item">
     <a href={path}>
       <div className="rezeptliste-item-image">
-        <Image src={thumbnail} alt={title} breakpoints={[{ width: '286' }]} />
+        <Image src={thumbnail} alt={title} breakpoints={[{ width: '286' }]} width="286" height="215" />
       </div>
       <div className="rezeptliste-item-content">
         <div className="rezeptliste-item-title">

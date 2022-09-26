@@ -17,7 +17,7 @@ export default async function decorate(block) {
           <div class="carousel-item-image">
             <picture>
               <source type="image/webp" srcset="${pathname}?width=158&format=webply&optimize=medium">
-              <img src="${pathname}?width=158&format=png&optimize=medium" alt="Zucchini-Kabeljau-Lasagne" loading="lazy">
+              <img src="${pathname}?width=158&format=png&optimize=medium" alt="Zucchini-Kabeljau-Lasagne" loading="lazy" width="158" height="119">
             </picture>
           </div>
           <div class="carousel-item-title">

@@ -14,7 +14,8 @@ const Image = props => {
     }],
     src,
     alt = '',
-    eager = false
+    eager = false,
+    ...otherProps
   } = props;
   const url = new URL(src, window.location.href);
   const {
@@ -37,11 +38,11 @@ const Image = props => {
         srcSet: `${pathname}?width=${breakpoint.width}&format=${ext}&optimize=medium`
       }));
     } else {
-      fallbackSources.push(h("img", {
+      fallbackSources.push(h("img", _extends({
         src: `${pathname}?width=${breakpoint.width}&format=${ext}&optimize=medium`,
         alt: alt,
         loading: eager ? 'eager' : 'lazy'
-      }));
+      }, otherProps)));
     }
   });
   return h("picture", null, optimizedSources, fallbackSources);
@@ -154,7 +155,9 @@ const Recipe = props => {
     alt: title,
     breakpoints: [{
       width: '286'
-    }]
+    }],
+    width: "286",
+    height: "215"
   })), h("div", {
     className: "rezeptliste-item-content"
   }, h("div", {
