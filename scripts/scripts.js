@@ -9,6 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+/* eslint-disable no-console */
 
 /**
  * log RUM if part of the sample.
@@ -489,10 +490,276 @@ function decorateTemplateAndTheme() {
 }
 
 /**
+ * Replaces element with content from path
+ * @param {string} path
+ * @param {HTMLElement} element
+ */
+async function replaceInner(path, element) {
+  const plainPath = `${path}.plain.html`;
+  try {
+    const resp = await fetch(plainPath);
+    if (!resp.ok) {
+      console.log('error loading experiment content:', resp);
+      return null;
+    }
+    const html = await resp.text();
+    element.innerHTML = html;
+  } catch (e) {
+    console.log(`error loading experiment content: ${plainPath}`, e);
+  }
+  return null;
+}
+
+async function decorateCampaign() {
+  try {
+    const campaigns = (getMetadata('campaigns') || '').split(',').map((c) => toClassName(c.trim()));
+    if (!campaigns.length) {
+      return null;
+    }
+
+    const usp = new URLSearchParams(window.location.search);
+    const campaign = usp.get('campaign');
+    if (!campaign || !campaigns.includes(campaign)) {
+      return null;
+    }
+
+    const campaignsPath = '/campaigns';
+    const campaignPath = new URL(`${window.hlx.codeBasePath}${campaignsPath}/${campaign}`, window.location.href).pathname;
+    const currentPath = window.location.pathname;
+    if (campaignPath && campaignPath !== currentPath) {
+      await replaceInner(campaignPath, document.querySelector('main'));
+    }
+    return campaign;
+  } catch (e) {
+    console.log('error testing', e);
+  }
+  return null;
+}
+
+/**
+ * Gets the experiment name, if any for the page based on env, useragent, queyr params
+ * @returns {string} experimentid
+ */
+export function getExperiment() {
+  // Non-prod website get default content
+  // if (!window.location.host.includes('.hlx.live')) {
+  //   return null;
+  // }
+  // Anchor links get default content
+  if (window.location.hash) {
+    return null;
+  }
+  // Bots get default content
+  if (navigator.userAgent.match(/bot|crawl|spider/i)) {
+    return null;
+  }
+
+  // Get experiment from markup
+  return toClassName(getMetadata('experiment') || '');
+}
+
+/**
+ * const config = {
+      experimentName: `Instant Experiment: ${experimentId}`,
+      audience: '',
+      status: 'Active',
+      id: experimentId,
+      variants: {},
+      variantNames: [],
+    };
+ */
+export function parseExperimentConfig(json) {
+  const config = {};
+  try {
+    json.settings.data.forEach((row) => {
+      config[toCamelCase(row.Name)] = row.Value;
+    });
+
+    config.variantNames = [];
+    config.variants = {};
+    json.experiences.data.forEach((row) => {
+      const variantName = toCamelCase(row.Name);
+      config.variantNames.push(variantName);
+      config.variants[variantName] = {
+        percentageSplit: row.Split,
+        pages: [new URL(row.Pages.trim()).pathname],
+        label: row.Label,
+      };
+    });
+    return config;
+  } catch (e) {
+    console.log('error parsing experiment config:', e);
+  }
+  return null;
+}
+
+/**
+ * Gets experiment config from the manifest and transforms it to more easily
+ * consumable structure.
+ *
+ * the manifest consists of two sheets "settings" and "experiences"
+ *
+ * "settings" is applicable to the entire test and contains information
+ * like "Audience", "Status" or "Blocks".
+ *
+ * "experience" hosts the experiences in columns, consisting of:
+ * a "Percentage Split", "Label" and a set of "Pages".
+ *
+ *
+ * @param {string} experimentId
+ * @returns {object} containing the experiment manifest
+ */
+export async function getExperimentConfig(experimentId) {
+  const path = `/experiments/${experimentId}/franklin-experiment.json`;
+  try {
+    const resp = await fetch(path);
+    if (!resp.ok) {
+      console.log('error loading experiment config:', resp);
+      return null;
+    }
+    const json = await resp.json();
+    const config = parseExperimentConfig(json);
+    config.id = experimentId;
+    config.manifest = path;
+    return config;
+  } catch (e) {
+    console.log(`error loading experiment manifest: ${path}`, e);
+  }
+  return null;
+}
+
+/**
+ * this is an extensible stub to take on audience mappings
+ * @param {string} audience
+ * @return {boolean} is member of this audience
+ */
+function isValidAudience(audience) {
+  if (audience === 'mobile') {
+    return window.innerWidth < 600;
+  }
+  if (audience === 'desktop') {
+    return window.innerWidth >= 600;
+  }
+  return true;
+}
+
+function getRandomVariant(config) {
+  let random = Math.random();
+  let i = config.variantNames.length;
+  while (random > 0 && i > 0) {
+    i -= 1;
+    console.debug(random, i);
+    random -= +config.variants[config.variantNames[i]].percentageSplit;
+  }
+  return config.variantNames[i];
+}
+
+/**
+ * sets/updates the variant id that is assigned to this visitor,
+ * also cleans up old variant ids
+ * @param {string} experimentId
+ * @param {variant} variant
+ */
+function saveSelectedExperimentVariant(experimentId, variant) {
+  const experimentsStr = localStorage.getItem('hlx-experiments');
+  const experiments = experimentsStr ? JSON.parse(experimentsStr) : {};
+
+  const now = new Date();
+  const expKeys = Object.keys(experiments);
+  expKeys.forEach((key) => {
+    const date = new Date(experiments[key].date);
+    if (now - date > (1000 * 86400 * 30)) {
+      delete experiments[key];
+    }
+  });
+  const [date] = now.toISOString().split('T');
+
+  experiments[experimentId] = { variant, date };
+  localStorage.setItem('hlx-experiments', JSON.stringify(experiments));
+}
+
+/**
+ * gets the variant id that this visitor has been assigned to if any
+ * @param {string} experimentId
+ * @return {string} assigned variant or empty string if none set
+ */
+
+function getSavedExperimentVariant(experimentId) {
+  const experimentsStr = localStorage.getItem('hlx-experiments');
+  if (!experimentsStr) {
+    return null;
+  }
+
+  const experiments = JSON.parse(experimentsStr);
+  return experiments[experimentId] ? experiments[experimentId].variant : null;
+}
+
+/**
+ * checks if a test is active on this page and if so executes the test
+ */
+async function decorateExperiment() {
+  try {
+    const experiment = getExperiment();
+    if (!experiment) {
+      return;
+    }
+
+    const usp = new URLSearchParams(window.location.search);
+    const [forcedExperiment, forcedVariant] = usp.has('experiment') ? usp.get('experiment').split('/') : [];
+    console.debug('experiment', forcedExperiment || experiment, forcedVariant || '');
+
+    const config = await getExperimentConfig(experiment);
+    console.debug(config);
+    if (toCamelCase(config.status) !== 'active' && !forcedExperiment) {
+      return;
+    }
+
+    config.run = forcedExperiment || isValidAudience(toClassName(config.audience));
+    window.hlx = window.hlx || {};
+    window.hlx.experiment = config;
+    console.debug('run', config.run, config.audience);
+    if (!config.run) {
+      return;
+    }
+
+    const forced = forcedVariant || getSavedExperimentVariant(config.id);
+    if (forced && config.variantNames.includes(forced)) {
+      config.selectedVariant = forced;
+    } else {
+      config.selectedVariant = getRandomVariant(config);
+    }
+
+    saveSelectedExperimentVariant(config.id, config.selectedVariant);
+    sampleRUM('experiment', { source: config.id, target: config.selectedVariant });
+    console.debug(`running experiment (${window.hlx.experiment.id}) -> ${window.hlx.experiment.selectedVariant}`);
+
+    if (config.selectedVariant === config.variantNames[0]) {
+      return;
+    }
+
+    const currentPath = window.location.pathname;
+    const pageIndex = config.variants[config.variantNames[0]].pages.indexOf(currentPath);
+    if (pageIndex < 0) {
+      return;
+    }
+
+    const page = config.variants[config.selectedVariant].pages[pageIndex];
+    if (!page) {
+      return;
+    }
+    const experimentPath = new URL(page, window.location.href).pathname.split('.')[0];
+    if (experimentPath && experimentPath !== currentPath) {
+      await replaceInner(experimentPath, document.querySelector('main'));
+    }
+  } catch (e) {
+    console.log('error testing', e);
+  }
+}
+
+/**
  * decorates paragraphs containing a single link as buttons.
  * @param {Element} element container element
  */
-
 export function decorateButtons(element) {
   element.querySelectorAll('a').forEach((a) => {
     a.title = a.title || a.textContent;
@@ -569,6 +836,11 @@ async function loadPage(doc) {
   await loadLazy(doc);
   // eslint-disable-next-line no-use-before-define
   loadDelayed(doc);
+
+  if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost')) {
+    // eslint-disable-next-line import/no-cycle
+    import('./experiment-preview.js');
+  }
 }
 
 export function initHlx() {
@@ -672,6 +944,11 @@ export function decorateMain(main) {
  */
 async function loadEager(doc) {
   decorateTemplateAndTheme();
+  const campaign = await decorateCampaign();
+  if (!campaign) {
+    await decorateExperiment();
+  }
+
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
