@@ -19,6 +19,15 @@
   justify-content: center;
 }
 
-.rezept .recipe-info .recipe-icon .recipe-level-icons,.recipe-prep-icon,.recipe-cook-icon {
+.rezept .recipe-info .recipe-icon .recipe-level-icons {
+  display: flex;
+}
+
+.rezept .recipe-info .recipe-icon {
+  display: block;
+}
+
+.rezept .recipe-info .recipe-prep-icon,.recipe-cook-icon {
    display: block;
+   width:22px
 }
