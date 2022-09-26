@@ -142,8 +142,11 @@ const Recipe = props => {
     thumbnail,
     title,
     level,
-    preparationTime
+    preparationTime,
+    enhanced
   } = props;
+  const width = enhanced ? 388 : 286;
+  const height = enhanced ? 290 : 215;
   return h("div", {
     className: "rezeptliste-item"
   }, h("a", {
@@ -154,10 +157,10 @@ const Recipe = props => {
     src: thumbnail,
     alt: title,
     breakpoints: [{
-      width: '286'
+      width
     }],
-    width: "286",
-    height: "215"
+    width: width,
+    height: height
   })), h("div", {
     className: "rezeptliste-item-content"
   }, h("div", {
@@ -172,16 +175,22 @@ const Recipe = props => {
     className: "rezeptliste-item-time"
   }, h(PreparationTime, {
     time: preparationTime
-  }))))));
+  }))), h("div", {
+    className: "rezeptliste-item-button",
+    href: "{path}"
+  }, "Zum Rezept"))));
 };
 
 const RezeptListe = props => {
   const {
     kategorie,
     limit,
-    sortieren
+    sortieren,
+    ernaehrungsform,
+    classes
   } = props;
   const [recipes, setRecipes] = useState([]);
+  const enhanced = classes.includes('enhanced');
   useEffect(() => {
     (async () => {
       // Read index
@@ -190,6 +199,11 @@ const RezeptListe = props => {
 
       if (kategorie) {
         rawRecipes = rawRecipes.filter(recipe => recipe.categories.includes(kategorie));
+      } // Filter by nutrition
+
+
+      if (ernaehrungsform) {
+        rawRecipes = rawRecipes.filter(recipe => recipe.nutritionforms.includes(ernaehrungsform));
       } // Limit
 
 
@@ -211,16 +225,20 @@ const RezeptListe = props => {
     })();
   }, []);
   return h("div", {
-    className: "rezeptliste block"
+    className: classes.join(' ')
   }, h("div", {
     className: "rezeptliste-content"
   }, recipes.map(recipe => h(Recipe, _extends({
     key: recipe.path
-  }, recipe)))));
+  }, recipe, {
+    enhanced: enhanced
+  })))));
 };
 
 export default function decorate(block) {
   const cfg = readBlockConfig(block);
   block.textContent = '';
-  render(h(RezeptListe, cfg), block.parentNode, block);
+  render(h(RezeptListe, _extends({}, cfg, {
+    classes: Array.from(block.classList)
+  })), block.parentNode, block);
 }

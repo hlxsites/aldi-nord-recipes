@@ -20,6 +20,11 @@
   transform: translate(0,-3px);
 }
 
+.rezeptliste.enhanced .rezeptliste-item {
+  width: 388px;
+  height: 484px;
+}
+
 .rezeptliste-item a {
   display: flex;
   flex-flow: column;
@@ -30,18 +35,31 @@
   color: #172b4d;
 }
 
+.rezeptliste-item a:hover .rezeptliste-item-button {
+  border-color: #2490d7;
+  color: #2490d7;
+}
+
 .rezeptliste-item-content {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   justify-content: space-between;
-  padding: 18px 10px 0 10px;
+  padding: 18px 10px 10px 10px;
 }
 
 .rezeptliste-item-image {
   display: block;
   width: 100%;
   height: 214px;
+}
+
+.rezeptliste.enhanced .rezeptliste-item-image {
+  height: 290px;
+}
+
+.rezeptliste-item-image img {
+  width: 100%;
 }
 
 .rezeptliste-item-title {
@@ -56,7 +74,10 @@
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-  padding-bottom: 10px;
+}
+
+.rezeptliste.enhanced .rezeptliste-item-meta {
+  display: none;
 }
 
 .rezeptliste-item-time {
@@ -76,4 +97,22 @@
 
 .icon-recipe-level-empty svg {
   fill: #c4c9d2;
+}
+
+.rezeptliste-item-button {
+  display: none;
+}
+
+.rezeptliste.enhanced .rezeptliste-item-button {
+  display: block;
+  border: 1px solid #d5dce6;
+  color: #2490d7;
+  transition: border .3s,color .3s;
+  font-family: var(--bold-font-family);
+  border-radius: 5px;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 15px 0;
+  font-size: 14px;
 }

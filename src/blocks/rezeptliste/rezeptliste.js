@@ -94,13 +94,17 @@ const Level = (props) => {
 
 const Recipe = (props) => {
   const {
-    path, thumbnail, title, level, preparationTime,
+    path, thumbnail, title, level, preparationTime, enhanced,
   } = props;
+
+  const width = enhanced ? 388 : 286;
+  const height = enhanced ? 290 : 215;
 
   return (<div className="rezeptliste-item">
     <a href={path}>
       <div className="rezeptliste-item-image">
-        <Image src={thumbnail} alt={title} breakpoints={[{ width: '286' }]} width="286" height="215" />
+        <Image src={thumbnail} alt={title} breakpoints={[{ width }]} width={width}
+          height={height} />
       </div>
       <div className="rezeptliste-item-content">
         <div className="rezeptliste-item-title">
@@ -114,14 +118,18 @@ const Recipe = (props) => {
             <PreparationTime time={preparationTime} />
           </div>
         </div>
+        <div className="rezeptliste-item-button" href="{path}">Zum Rezept</div>
       </div>
     </a>
   </div>);
 };
 
 const RezeptListe = (props) => {
-  const { kategorie, limit, sortieren } = props;
+  const {
+    kategorie, limit, sortieren, ernaehrungsform, classes,
+  } = props;
   const [recipes, setRecipes] = useState([]);
+  const enhanced = classes.includes('enhanced');
 
   useEffect(() => {
     (async () => {
@@ -133,6 +141,11 @@ const RezeptListe = (props) => {
       // Filter by category
       if (kategorie) {
         rawRecipes = rawRecipes.filter((recipe) => recipe.categories.includes(kategorie));
+      }
+
+      // Filter by nutrition
+      if (ernaehrungsform) {
+        rawRecipes = rawRecipes.filter((recipe) => recipe.nutritionforms.includes(ernaehrungsform));
       }
 
       // Limit
@@ -154,9 +167,9 @@ const RezeptListe = (props) => {
     })();
   }, []);
 
-  return <div className="rezeptliste block">
+  return <div className={classes.join(' ')}>
     <div className="rezeptliste-content">
-      {recipes.map((recipe) => <Recipe key={recipe.path} {...recipe} />)}
+      {recipes.map((recipe) => <Recipe key={recipe.path} {...recipe} enhanced={enhanced} />)}
     </div>
   </div>;
 };
@@ -165,5 +178,5 @@ export default function decorate(block) {
   const cfg = readBlockConfig(block);
 
   block.textContent = '';
-  render(<RezeptListe {...cfg} />, block.parentNode, block);
+  render(<RezeptListe {...cfg} classes={Array.from(block.classList)} />, block.parentNode, block);
 }
