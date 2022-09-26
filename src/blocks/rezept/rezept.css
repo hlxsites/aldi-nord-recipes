@@ -43,8 +43,20 @@
   margin-bottom: 0.25rem;
 }
 
-.rezept .switch-ingredients,
-.switch-prepare {
+.rezept .switch input[type=radio] {
+  width:100%;
+  line-height: inherit;
+}
+
+.rezept .switch input[type=radio]:checked+label+.ingredients-content {
+  display:none;
+}
+
+.rezept .switch input[type=radio]:checked+label+.description-content {
+  display:none;
+}
+
+.rezept label {
   font-family: FFDINWebProBold, Arial, sans-serif;
   flex-grow: 1;
   align-items: center;

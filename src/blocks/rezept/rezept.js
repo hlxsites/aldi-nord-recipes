@@ -6,50 +6,57 @@ function getCfg(block) {
   let active = "rezeptinfo";
 
   [...block.children].forEach(element => {
-    if (element.children[0].innerText === "Zutaten") {
-      active = "zutaten";
-      return;
+
+    // check for table section change
+    switch (element.children[0].innerText) {
+      case 'Zutaten':
+        active = 'zutaten';
+        return;
+      case 'Zubereitung':
+        active = 'zubereitung';
+        return;
     }
-    if (element.children[0].innerText === "Zubereitung") {
-      active = "zubereitung";
-      return;
-    }
-    // recipe info as object
-    if (active === "rezeptinfo") {
-      cfg[active][element.children[0].innerText] = element.children[1].innerText;
-    }
-    // incredients as 2 dim array
-    if (active === "zutaten") {
-      if (element.children.length === 2) {
-        cfg[active].push([element.children[0].innerText, element.children[1].innerText]);
-      } else {
-        cfg[active].push([element.children[0].innerText]);
-      }
-    }
-    // description as plain DOM object
-    if(active === "zubereitung") {
+
+    // fil content for different sections
+    switch (active) {
+      case 'rezeptinfo':
+        // recipe info as object
+        cfg[active][element.children[0].innerText] = element.children[1].innerText;
+        break;
+      case 'zutaten':
+        // incredients as 2 dim array
+        if (element.children.length === 2) {
+          cfg[active].push([element.children[0].innerText, element.children[1].innerText]);
+        } else {
+          cfg[active].push([element.children[0].innerText]);
+        }
+        break;
+      case 'zubereitung':
+        // description as plain DOM object
         cfg[active] = element.children[0];
-    }
+        break;
+      }
   });
-  console.log(cfg);
   return cfg;
 }
 
+// create dom for level, prepare and cook time info
 function getRecipeInfoDOM(cfg) {
+  // calc prep and cook time in hours and minutes
   let prepTime = `${cfg.Vorbereitung % 60}Min`;
-  const prepHrs = Math.floor(cfg.Vorbereitung/60);
-  if(prepHrs > 0){
-     prepTime = `${prepHrs}Std ${prepTime}`;
+  const prepHrs = Math.floor(cfg.Vorbereitung / 60);
+  if (prepHrs > 0) {
+    prepTime = `${prepHrs}Std ${prepTime}`;
   }
 
   let cookTime = `${cfg.Kochzeit % 60}Min`;
-  const cookHrs = Math.floor(cfg.Kochzeit/60);
-  if(cookHrs > 0){
-     cookTime = `${cookHrs}Std ${cookTime}`;
+  const cookHrs = Math.floor(cfg.Kochzeit / 60);
+  if (cookHrs > 0) {
+    cookTime = `${cookHrs}Std ${cookTime}`;
   }
 
-  return document.createRange().createContextualFragment(
-    `<div class='recipe-info'>
+  return document.createRange().createContextualFragment(`
+    <div class='recipe-info'>
       <div class='recipe-icon'>
         <div class='recipe-level-icons'>
           <span class='icon icon-recipe-level'></span>  
@@ -70,11 +77,12 @@ function getRecipeInfoDOM(cfg) {
         </div>
         <p>${cookTime}</p>
       </div>
-    </div>`
-  );
+    </div>
+  `);
 }
 
-/* function getIngredientsDOM(cfg, portions){
+// create table for list of ingredients and addtional infos
+function getIngredientsDOM(cfg, portions,saisonal) {
   // start table
   const table = document.createRange().createContextualFragment(`
   <table class='recipe-list'>
@@ -86,90 +94,68 @@ function getRecipeInfoDOM(cfg) {
   </table>
   `);
 
-  let row;
+  const tbody = table.children[0].querySelector('tbody');
+  let row,cell,th;
   // go through list of ingredients
   cfg.forEach(element => {
+    row = tbody.insertRow();
     // if its a subtitle
     if (element.length === 1) {
-      row = document.createRange().createContextualFragment(`
-      <tr><th class='h4' colspan='2'>${element[0]}</th></tr>`);
+      th = document.createElement('th');
+      th.setAttribute('class','h4')
+      th.setAttribute('colspan','2')
+      th.innerHTML = element[0];
+      row.append(th)
+      
     } else {
-      row = document.createRange().createContextualFragment(`
-      <tr>
-        <td>${element[0]}</td>
-        <td>${element[1]}</td>
-      </tr>
-      `);
+      // ingredient entry
+      cell = row.insertCell();
+      cell.innerHTML = element[0];
+      cell = row.insertCell();
+      cell.innerHTML = element[1];
     }
-    ......
   });
+
+  // if season text is required
+  if (saisonal.toLowerCase() === "ja") {
+    const saisonText = document.createRange().createContextualFragment(`
+    <tr>
+      <th class='h4' colspan='2'>
+        Saisonbedingt sind leider nicht alle Artikel dauerhaft in unserem Sortiment verfügbar.
+      </th>
+    </tr>
+    `);
+    tbody.appendChild(saisonText)
+  }
 
   return table;
 }
- */
 
-function getIngredientsDOM(cfg, portions){
-  // start table
-  const listTable = document.createElement("table");
-  listTable.setAttribute('class','recipe-list');
-  const tBody = document.createElement('tbody');
-  listTable.append(tBody);
-  // first entry is number of portions
-  let tr = document.createElement('tr');
-  let th = document.createElement('th');
-  th.setAttribute('class','h4');
-  th.setAttribute('colspan','2');
-  th.append(`${portions} Portionen` )
-  tr.append(th); 
-  tBody.append(tr);
-
-  // go through list of ingridients
-  cfg.forEach(element => {
-    let tr = document.createElement('tr');
-    // if its a subtitle
-    if (element.length === 1) {
-      let th = document.createElement('th');
-      th.setAttribute('class','h4');
-      th.setAttribute('colspan','2');
-      th.append(element[0])
-      tr.append(th);
-    } else {
-      // add ingredient 
-      let amount = document.createElement('td');
-      amount.innerHTML = element[0];
-      let descr = document.createElement('td');
-      descr.innerHTML = element[1];
-      tr.append(amount,descr);
-    }
-    tBody.append(tr);
-  });
-  return listTable;
-
-}
-function getSwitcherDOM(ingredientsContent,descriptionContent) {
+// render the DOM structure required for tab switching
+function getSwitcherDOM(ingredientsContent, descriptionContent) {
   const tabs = document.createRange().createContextualFragment(`
   <div class='switch'>
     <div class='switch-ingredients'>
       <input name="tab" type="radio" checked="checked">
-      <label>Zutaten<label>
+      <label>Zutaten</label>
       <div class='ingredients-content'>
       </div>
     </div>
     <div class='switch-prepare'>
       <input name="tab" type="radio" checked="checked">
-      <label>Zubereitung<label>
+      <label>Zubereitung</label>
       <div class='description-content'>
       </div>
     </div>
   </div`);
-  // tabs.children[0].querySelector('ingredients-content').appendChild(ingredientsContent)
-  // tabs.children[0].querySelector('description-content').appendChild(descriptionContent)
+  tabs.children[0].querySelector('.ingredients-content').appendChild(ingredientsContent)
+  tabs.children[0].querySelector('.description-content').appendChild(descriptionContent)
   return tabs;
-
 }
 
-function getDescriptionDOM(cfg){
-  cfg.setAttribute('class','recipe-description');
+// render the DOM for the description text
+function getDescriptionDOM(cfg) {
+  cfg.setAttribute('class', 'recipe-description');
   return cfg;
 }
 
@@ -178,14 +164,15 @@ export default function decorate(block) {
   const cfg = getCfg(block);
   // clean the block
   block.textContent = '';
+
   // render the recipe info
   block.append(getRecipeInfoDOM(cfg.rezeptinfo));
-  // render the switcher 
+
+  // render the tab switcher 
   block.append(getSwitcherDOM(
-    getIngredientsDOM(cfg.zutaten,cfg.rezeptinfo.Portionen,cfg.rezeptinfo.Saisonal),
+    getIngredientsDOM(cfg.zutaten, cfg.rezeptinfo.Portionen, cfg.rezeptinfo.Saisonal),
     getDescriptionDOM(cfg.zubereitung)));
-  block.append(getIngredientsDOM(cfg.zutaten,cfg.rezeptinfo.Portionen,cfg.rezeptinfo.Saisonal));
-  block.append(getDescriptionDOM(cfg.zubereitung));  
+
   // render footer with links
   block.append(document.createRange().createContextualFragment(`
     <div class='cta'>
