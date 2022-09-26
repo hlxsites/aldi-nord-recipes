@@ -1,1 +1,3 @@
 helix-importer-ui
+dist
+scripts/preact.module.js

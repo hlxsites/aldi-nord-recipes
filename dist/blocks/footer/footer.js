@@ -1,5 +1,4 @@
-import { readBlockConfig, decorateMain, loadBlocks } from '../../scripts/scripts.js';
-
+import { readBlockConfig, decorateMain, loadBlocks } from '../../../scripts/scripts.js';
 /**
  * loads and decorates the footer
  * @param {Element} block The header block element
@@ -8,7 +7,6 @@ import { readBlockConfig, decorateMain, loadBlocks } from '../../scripts/scripts
 export default async function decorate(block) {
   const cfg = readBlockConfig(block);
   block.textContent = '';
-
   const footerPath = cfg.footer || '/footer';
   const resp = await fetch(`${footerPath}.plain.html`);
   const html = await resp.text();

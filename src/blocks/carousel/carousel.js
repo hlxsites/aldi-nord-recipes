@@ -1,4 +1,4 @@
-import { readBlockConfig, createOptimizedPicture, fetchIndex } from '../../scripts/scripts.js';
+import { readBlockConfig, createOptimizedPicture, fetchIndex } from '../../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const cfg = readBlockConfig(block);

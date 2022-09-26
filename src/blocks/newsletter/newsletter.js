@@ -1,4 +1,4 @@
-import { createOptimizedPicture } from '../../scripts/scripts.js';
+import { createOptimizedPicture } from '../../../scripts/scripts.js';
 
 export default function decorate(block) {
   const cols = [...block.firstElementChild.children];
