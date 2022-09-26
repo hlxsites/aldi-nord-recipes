@@ -4,6 +4,49 @@ import { h, Fragment, render } from '../../../scripts/preact.module.js';
 import { fetchIndex, readBlockConfig } from '../../../scripts/scripts.js';
 import { useEffect, useState } from '../../../scripts/hooks.module.js';
 
+const Image = props => {
+  const {
+    breakpoints = [{
+      media: '(min-width: 400px)',
+      width: '2000'
+    }, {
+      width: '750'
+    }],
+    src,
+    alt = '',
+    eager = false
+  } = props;
+  const url = new URL(src, window.location.href);
+  const {
+    pathname
+  } = url;
+  const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
+  const optimizedSources = [];
+  breakpoints.forEach(breakpoint => {
+    optimizedSources.push(h("source", {
+      media: breakpoint.media,
+      type: "image/webp",
+      srcSet: `${pathname}?width=${breakpoint.width}&format=webply&optimize=medium`
+    }));
+  });
+  const fallbackSources = [];
+  breakpoints.forEach((breakpoint, i) => {
+    if (i < breakpoints.length - 1) {
+      fallbackSources.push(h("source", {
+        media: breakpoint.media,
+        srcSet: `${pathname}?width=${breakpoint.width}&format=${ext}&optimize=medium`
+      }));
+    } else {
+      fallbackSources.push(h("img", {
+        src: `${pathname}?width=${breakpoint.width}&format=${ext}&optimize=medium`,
+        alt: alt,
+        loading: eager ? 'eager' : 'lazy'
+      }));
+    }
+  });
+  return h("picture", null, optimizedSources, fallbackSources);
+};
+
 const Icon = ({
   name,
   className = ''
@@ -106,10 +149,13 @@ const Recipe = props => {
     href: path
   }, h("div", {
     className: "rezeptliste-item-image"
-  }, h("picture", null, h("img", {
+  }, h(Image, {
     src: thumbnail,
-    alt: title
-  }))), h("div", {
+    alt: title,
+    breakpoints: [{
+      width: '286'
+    }]
+  })), h("div", {
     className: "rezeptliste-item-content"
   }, h("div", {
     className: "rezeptliste-item-title"

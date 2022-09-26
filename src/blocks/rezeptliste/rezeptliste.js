@@ -2,6 +2,35 @@ import { h, Fragment, render } from '../../../scripts/preact.module.js';
 import { fetchIndex, readBlockConfig } from '../../../scripts/scripts.js';
 import { useEffect, useState } from '../../../scripts/hooks.module.js';
 
+const Image = (props) => {
+  const {
+    breakpoints = [{ media: '(min-width: 400px)', width: '2000' }, { width: '750' }], src, alt = '', eager = false,
+  } = props;
+
+  const url = new URL(src, window.location.href);
+  const { pathname } = url;
+  const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
+
+  const optimizedSources = [];
+  breakpoints.forEach((breakpoint) => {
+    optimizedSources.push(<source media={breakpoint.media} type="image/webp" srcSet={`${pathname}?width=${breakpoint.width}&format=webply&optimize=medium`} />);
+  });
+
+  const fallbackSources = [];
+  breakpoints.forEach((breakpoint, i) => {
+    if (i < breakpoints.length - 1) {
+      fallbackSources.push(<source media={breakpoint.media} srcSet={`${pathname}?width=${breakpoint.width}&format=${ext}&optimize=medium`} />);
+    } else {
+      fallbackSources.push(<img src={`${pathname}?width=${breakpoint.width}&format=${ext}&optimize=medium`} alt={alt} loading={eager ? 'eager' : 'lazy'} />);
+    }
+  });
+
+  return <picture>
+    {optimizedSources}
+    {fallbackSources}
+  </picture>;
+};
+
 const Icon = ({ name, className = '' }) => {
   const ICON_ROOT = '/icons';
 
@@ -71,9 +100,7 @@ const Recipe = (props) => {
   return (<div className="rezeptliste-item">
     <a href={path}>
       <div className="rezeptliste-item-image">
-        <picture>
-          <img src={thumbnail} alt={title} />
-        </picture>
+        <Image src={thumbnail} alt={title} breakpoints={[{ width: '286' }]} />
       </div>
       <div className="rezeptliste-item-content">
         <div className="rezeptliste-item-title">
