@@ -1,0 +1,73 @@
+.teaser>div {
+  opacity: 1;
+  width: 1200px;
+  position: relative;
+  left: 0;
+  top: 0;
+  display: block;
+}
+
+.teaser .teaser-image img {
+  display: block;
+  height: 432px;
+  object-fit: cover;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.teaser-caption-right {
+  right: auto;
+}
+
+.teaser .teaser-caption-right,
+.teaser-caption-left {
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  left: 6%;
+  max-width: 44%;
+  position: absolute;
+  right: 6%;
+  top: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.teaser-caption-left {
+  left: auto;
+}
+
+.teaser h2 {
+  font-size: 1.875rem;
+  line-height: 42px;
+  padding: 24px;
+  background-color: rgba(255 255 255 / 80%);
+  font-family: FFDINWebPro, Arial, sans-serif;
+  margin: 0;
+}
+
+.teaser .subhead {
+  padding: 0 24px 24px;
+  background-color: rgba(255 255 255 / 80%);
+  max-width: 80%;
+  padding-bottom: 24px;
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+.teaser .subhead p {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.teaser .button-container {
+  margin: 0;
+}
+
+.teaser .button-container a.button.primary,
+button.primary {
+  background-color: #2490d7;
+  border-color: #2490d7;
+  color: #fff;
+}
