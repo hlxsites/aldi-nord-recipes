@@ -1,4 +1,4 @@
-import { readBlockConfig, createOptimizedPicture, fetchIndex } from '../../../scripts/scripts.js';
+import { readBlockConfig, fetchIndex } from '../../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const cfg = readBlockConfig(block);
@@ -15,11 +15,14 @@ export default async function decorate(block) {
   const carousel = document.createRange().createContextualFragment('<div class="carousel-content"></div>');
 
   indexContent.data.forEach((item) => {
+    const { pathname } = new URL(item.thumbnail, window.location.href);
+
     const card = document.createRange().createContextualFragment(`<div class="carousel-item">
         <a href="${item.path}">
           <div class="carousel-item-image">
             <picture>
-              <img src="${item.thumbnail}" alt="${item.title}" />
+              <source type="image/webp" srcset="${pathname}?width=158&format=webply&optimize=medium">
+              <img src="${pathname}?width=158&format=png&optimize=medium" alt="Zucchini-Kabeljau-Lasagne" loading="lazy" width="158" height="119">
             </picture>
           </div>
           <div class="carousel-item-title">
@@ -30,8 +33,6 @@ export default async function decorate(block) {
 
     carousel.firstChild.appendChild(card);
   });
-
-  carousel.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '158' }])));
 
   block.appendChild(carousel);
 }
