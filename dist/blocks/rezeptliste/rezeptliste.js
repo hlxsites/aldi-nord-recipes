@@ -228,7 +228,9 @@ const RezeptListe = props => {
     className: classes.join(' ')
   }, h("div", {
     className: "rezeptliste-content"
-  }, recipes.map(recipe => h(Recipe, _extends({
+  }, recipes.length === 0 && h("div", {
+    className: "rezeptliste-empty"
+  }, "Keine Rezepte gefunden"), recipes.map(recipe => h(Recipe, _extends({
     key: recipe.path
   }, recipe, {
     enhanced: enhanced

@@ -169,6 +169,7 @@ const RezeptListe = (props) => {
 
   return <div className={classes.join(' ')}>
     <div className="rezeptliste-content">
+      {recipes.length === 0 && <div className="rezeptliste-empty">Keine Rezepte gefunden</div>}
       {recipes.map((recipe) => <Recipe key={recipe.path} {...recipe} enhanced={enhanced} />)}
     </div>
   </div>;
