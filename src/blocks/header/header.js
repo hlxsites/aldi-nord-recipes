@@ -30,9 +30,7 @@ export default async function decorate(block) {
   </div>
   <div class="header-tools-wrapper">
     <div class="header-tools">
-      <div class="header-tools-logo">
-      
-      </div>
+      <div class="header-tools-logo"></div>
       <div class="header-tools-search">
         <form>
           <div class="searchbox">
