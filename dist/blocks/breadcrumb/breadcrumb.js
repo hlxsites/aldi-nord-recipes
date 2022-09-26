@@ -20,7 +20,7 @@ export default function decorate(block) {
 
     if (i === paths.length - 1) {
       // Take page name from metadata, if available
-      const name = document.querySelector('head > meta[name="name"]').getAttribute('content') || element;
+      const name = document.querySelector('head > meta[name="name"]')?.getAttribute('content') || element;
       liEntry.append(name.replace('ernaehrungsform', 'ernährungsform'));
     } else {
       const link = document.createElement('a');

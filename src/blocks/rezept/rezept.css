@@ -1,3 +1,4 @@
+/* recipe info */
 .rezept .recipe-info {
   align-items: center;
   border-bottom: 1px solid #eee;
@@ -7,7 +8,7 @@
   margin-top: 2px;
 }
 
-.rezept .recipe-info .icon {
+.rezept  .icon {
   height: 22px;
   width: 22px;
 }
@@ -27,7 +28,78 @@
   display: block;
 }
 
-.rezept .recipe-info .recipe-prep-icon,.recipe-cook-icon {
-   display: block;
-   width:22px
+.rezept .recipe-info .recipe-prep-icon,
+.recipe-cook-icon {
+  display: block;
+  width: 22px
+}
+
+/* switcher */
+.rezept .switch {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+  margin-bottom: 0.25rem;
+}
+
+.rezept .switch-ingredients,
+.switch-prepare {
+  font-family: FFDINWebProBold, Arial, sans-serif;
+  flex-grow: 1;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  color: #172b4d;
+  cursor: pointer;
+  display: flex;
+  font-size: .75rem;
+  justify-content: center;
+  text-transform: uppercase;
+  transition: color .3s;
+  padding-bottom: 1rem;
+}
+
+.rezept .recipe-list {
+  border: none;
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+  border-spacing: 0;
+  display: table;
+  text-indent: initial;
+}
+
+.rezept .recipe-list tr {
+  font-size: 1rem;
+}
+
+.rezept .recipe-list th {
+  text-align: left;
+  vertical-align: top;
+  padding: 0 20px 20px 0;
+}
+
+.rezept .recipe-list .h4 {
+  font-size: 1rem;
+  line-height: 1.4375;
+  font-family: FFDINWebProBold,Arial,sans-serif;
+  margin-bottom: 10px;
+}
+
+.rezept .recipe-list td {
+  padding: 0 20px 20px 20px;
+  vertical-align: top;
+}
+.rezept .recipe-list td:first-child {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.rezept .cta {
+  display:flex;
+  justify-content: center;
+  gap:20px;
 }
