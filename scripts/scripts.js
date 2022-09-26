@@ -512,7 +512,7 @@ async function replaceInner(path, element) {
 
 async function decorateCampaign() {
   try {
-    const campaigns = getMetadata('campaigns').split(',').map((c) => toClassName(c.trim()));
+    const campaigns = (getMetadata('campaigns') || '').split(',').map((c) => toClassName(c.trim()));
     if (!campaigns.length) {
       return null;
     }
@@ -555,7 +555,7 @@ export function getExperiment() {
   }
 
   // Get experiment from markup
-  return toClassName(getMetadata('experiment'));
+  return toClassName(getMetadata('experiment') || '');
 }
 
 /**
