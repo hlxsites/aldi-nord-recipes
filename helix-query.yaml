@@ -100,3 +100,7 @@ indices:
         select: main .rezept > div:nth-of-type(7) > div:nth-of-type(2)
         values: |
           match(textContent(el), '([^ ,]+)')
+      date:
+        select: head > meta[name="publiziert"]
+        value: |
+          dateValue(attribute(el, 'content'), 'DD.MM.YYYY')
