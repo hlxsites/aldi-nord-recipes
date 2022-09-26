@@ -490,6 +490,53 @@ function decorateTemplateAndTheme() {
 }
 
 /**
+ * Replaces element with content from path
+ * @param {string} path
+ * @param {HTMLElement} element
+ */
+async function replaceInner(path, element) {
+  const plainPath = `${path}.plain.html`;
+  try {
+    const resp = await fetch(plainPath);
+    if (!resp.ok) {
+      console.log('error loading experiment content:', resp);
+      return null;
+    }
+    const html = await resp.text();
+    element.innerHTML = html;
+  } catch (e) {
+    console.log(`error loading experiment content: ${plainPath}`, e);
+  }
+  return null;
+}
+
+async function decorateCampaign() {
+  try {
+    const campaigns = getMetadata('campaigns').split(',').map((c) => toClassName(c.trim()));
+    if (!campaigns.length) {
+      return null;
+    }
+
+    const usp = new URLSearchParams(window.location.search);
+    const campaign = usp.get('campaign');
+    if (!campaign || !campaigns.includes(campaign)) {
+      return null;
+    }
+
+    const campaignsPath = '/campaigns';
+    const campaignPath = new URL(`${window.hlx.codeBasePath}${campaignsPath}/${campaign}`, window.location.href).pathname;
+    const currentPath = window.location.pathname;
+    if (campaignPath && campaignPath !== currentPath) {
+      await replaceInner(campaignPath, document.querySelector('main'));
+    }
+    return campaign;
+  } catch (e) {
+    console.log('error testing', e);
+  }
+  return null;
+}
+
+/**
  * Gets the experiment name, if any for the page based on env, useragent, queyr params
  * @returns {string} experimentid
  */
@@ -645,27 +692,6 @@ function getSavedExperimentVariant(experimentId) {
 
   const experiments = JSON.parse(experimentsStr);
   return experiments[experimentId] ? experiments[experimentId].variant : null;
-}
-
-/**
- * Replaces element with content from path
- * @param {string} path
- * @param {HTMLElement} element
- */
-async function replaceInner(path, element) {
-  const plainPath = `${path}.plain.html`;
-  try {
-    const resp = await fetch(plainPath);
-    if (!resp.ok) {
-      console.log('error loading experiment content:', resp);
-      return null;
-    }
-    const html = await resp.text();
-    element.innerHTML = html;
-  } catch (e) {
-    console.log(`error loading experiment content: ${plainPath}`, e);
-  }
-  return null;
 }
 
 /**
@@ -918,7 +944,10 @@ export function decorateMain(main) {
  */
 async function loadEager(doc) {
   decorateTemplateAndTheme();
-  await decorateExperiment();
+  const campaign = await decorateCampaign();
+  if (!campaign) {
+    await decorateExperiment();
+  }
 
   const main = doc.querySelector('main');
   if (main) {
