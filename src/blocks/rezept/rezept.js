@@ -33,6 +33,7 @@ function getCfg(block) {
 }
 
 function getRecipeInfoDOM(cfg) {
+  const prepHours = modcfg.Vorbereitung
   return document.createRange().createContextualFragment(
     `<div class='recipe-info'>
       <div class='recipe-icon'>
@@ -57,14 +58,6 @@ function getRecipeInfoDOM(cfg) {
       </div>
     </div>`
   );
-
-
-  const kochzeitDiv = document.createElement("div");
-  kochzeitDiv.setAttribute('class', 'recipe-icon');
-  kochzeitDiv.append(cfg.Kochzeit)
-  infoDiv.append(kochzeitDiv);
-
-  return infoDiv;
 }
 
 function getIngredientsDOM(cfg, portions){
