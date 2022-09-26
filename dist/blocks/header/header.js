@@ -27,7 +27,9 @@ export default async function decorate(block) {
   </div>
   <div class="header-tools-wrapper">
     <div class="header-tools">
-      <div class="header-tools-logo"></div>
+      <div class="header-tools-logo">
+      
+      </div>
       <div class="header-tools-search">
         <form>
           <div class="searchbox">
@@ -99,6 +101,8 @@ export default async function decorate(block) {
     width: '80',
     height: '84'
   }])));
+  logoContainer.querySelector('img').setAttribute('width', 80);
+  logoContainer.querySelector('img').setAttribute('height', 84);
   block.appendChild(headerFragment);
   decorateIcons(block);
 }
