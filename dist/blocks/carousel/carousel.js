@@ -1,4 +1,4 @@
-import { readBlockConfig, createOptimizedPicture, fetchIndex } from '../../../scripts/scripts.js';
+import { readBlockConfig, fetchIndex } from '../../../scripts/scripts.js';
 export default async function decorate(block) {
   const cfg = readBlockConfig(block);
   const index = cfg.typ === 'Kategorie' ? 'kategorie-index' : 'ernaehrungsform-index';
@@ -13,7 +13,8 @@ export default async function decorate(block) {
         <a href="${item.path}">
           <div class="carousel-item-image">
             <picture>
-              <img src="${item.thumbnail}" alt="${item.title}" />
+              <source type="image/webp" srcset="${item.thumbnail}?width=158&format=webply&optimize=medium">
+              <img src="${item.thumbnail}?width=158&format=png&optimize=medium" alt="Zucchini-Kabeljau-Lasagne" loading="lazy">
             </picture>
           </div>
           <div class="carousel-item-title">
@@ -23,8 +24,5 @@ export default async function decorate(block) {
       </div>`);
     carousel.firstChild.appendChild(card);
   });
-  carousel.querySelectorAll('img').forEach(img => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{
-    width: '158'
-  }])));
   block.appendChild(carousel);
 }
