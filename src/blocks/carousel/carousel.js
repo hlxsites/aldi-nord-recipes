@@ -15,12 +15,14 @@ export default async function decorate(block) {
   const carousel = document.createRange().createContextualFragment('<div class="carousel-content"></div>');
 
   indexContent.data.forEach((item) => {
+    const { pathname } = new URL(item.thumbnail, window.location.href);
+
     const card = document.createRange().createContextualFragment(`<div class="carousel-item">
         <a href="${item.path}">
           <div class="carousel-item-image">
             <picture>
-              <source type="image/webp" srcset="${item.thumbnail}?width=158&format=webply&optimize=medium">
-              <img src="${item.thumbnail}?width=158&format=png&optimize=medium" alt="Zucchini-Kabeljau-Lasagne" loading="lazy">
+              <source type="image/webp" srcset="${pathname}?width=158&format=webply&optimize=medium">
+              <img src="${pathname}?width=158&format=png&optimize=medium" alt="Zucchini-Kabeljau-Lasagne" loading="lazy">
             </picture>
           </div>
           <div class="carousel-item-title">
