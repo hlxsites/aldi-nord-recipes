@@ -1,8 +1,12 @@
 .rezeptliste-content {
   display: flex;
   flex-flow: row wrap;
-  gap: 15px;
+  gap: 16px;
   padding: 15px 0 40px;
+}
+
+.rezeptliste.enhanced .rezeptliste-content {
+  gap: 15px;
 }
 
 .rezeptliste-empty {
@@ -57,6 +61,10 @@
   padding: 18px 10px 10px 10px;
 }
 
+.rezeptliste.galerie .rezeptliste-item-content {
+  padding: 12px 9px 12px 16px;
+}
+
 .rezeptliste-item-image {
   display: block;
   width: 100%;
@@ -85,7 +93,7 @@
   justify-content: space-between;
 }
 
-.rezeptliste.enhanced .rezeptliste-item-meta {
+.rezeptliste.enhanced .rezeptliste-item-meta, .rezeptliste.galerie .rezeptliste-item-meta {
   display: none;
 }
 
@@ -124,4 +132,10 @@
   text-transform: uppercase;
   padding: 15px 0;
   font-size: 14px;
+}
+
+.rezeptliste.galerie .rezeptliste-item-button {
+  display: block;
+  text-transform: uppercase;
+  color: #2490d7;
 }
