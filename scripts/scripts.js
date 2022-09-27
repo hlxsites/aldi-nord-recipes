@@ -889,12 +889,19 @@ function buildHeroBlock(main) {
   // Only build hero block for main content
   if (main.tagName !== 'MAIN') return;
 
-  // TODO: Check for template, if recipe template, make sure h1 is before hero image
   const picture = main.querySelector('picture');
+
+  // Special handling for recipe pages
+  const rezeptTpl = document.body.classList.contains('rezept-tpl');
   if (picture) {
+    const oldSection = picture.closest('div');
     const section = document.createElement('div');
     section.append(buildBlock('hero', { elems: [picture] }));
-    main.prepend(section);
+    if (rezeptTpl) {
+      oldSection.replaceWith(section);
+    } else {
+      main.prepend(section);
+    }
   }
 }
 

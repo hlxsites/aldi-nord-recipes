@@ -1,12 +1,13 @@
+/* eslint-disable prefer-destructuring */
 import { decorateIcons } from '../../../scripts/scripts.js'; // extract the infos from the block
 
 function getCfg(block) {
-  let cfg = {
+  const cfg = {
     rezeptinfo: {},
     zutaten: [],
-    zubereitung: ""
+    zubereitung: ''
   };
-  let active = "rezeptinfo";
+  let active = 'rezeptinfo';
   [...block.children].forEach(element => {
     // check for table section change
     switch (element.children[0].innerText) {
@@ -17,6 +18,9 @@ function getCfg(block) {
       case 'Zubereitung':
         active = 'zubereitung';
         return;
+
+      default:
+        break;
     } // fil content for different sections
 
 
@@ -39,6 +43,9 @@ function getCfg(block) {
       case 'zubereitung':
         // description as plain DOM object
         cfg[active] = element.children[0];
+        break;
+
+      default:
         break;
     }
   });
@@ -101,7 +108,9 @@ function getIngredientsDOM(cfg, portions, saisonal) {
   </table>
   `);
   const tbody = table.children[0].querySelector('tbody');
-  let row, cell, th; // go through list of ingredients
+  let row;
+  let cell;
+  let th; // go through list of ingredients
 
   cfg.forEach(element => {
     row = tbody.insertRow(); // if its a subtitle
@@ -121,7 +130,7 @@ function getIngredientsDOM(cfg, portions, saisonal) {
     }
   }); // if season text is required
 
-  if (saisonal.toLowerCase() === "ja") {
+  if (saisonal.toLowerCase() === 'ja') {
     row = tbody.insertRow();
     th = document.createElement('th');
     th.setAttribute('class', 'h4');
@@ -164,7 +173,7 @@ export default function decorate(block) {
 
   block.textContent = ''; // render the recipe info
 
-  block.append(getRecipeInfoDOM(cfg.rezeptinfo)); // render the tab switcher 
+  block.append(getRecipeInfoDOM(cfg.rezeptinfo)); // render the tab switcher
 
   block.append(getSwitcherDOM(getIngredientsDOM(cfg.zutaten, cfg.rezeptinfo.Portionen, cfg.rezeptinfo.Saisonal), getDescriptionDOM(cfg.zubereitung))); // render footer with links
 
