@@ -137,20 +137,14 @@ function getIngredientsDOM(cfg, portions, saisonal) {
 function getSwitcherDOM(ingredientsContent, descriptionContent) {
   const tabs = document.createRange().createContextualFragment(`
   <div class='switch'>
-
-      <input name="tab" type="radio"  id='ingredients' checked="checked">
-      <label for='ingredients'>Zutaten</label>
-      <div class='ingredients-content'>
-
-
+    <input name="tab" type="radio"  id='ingredients' checked="checked">
+    <label for='ingredients'>Zutaten</label>
+    <div class='ingredients-content'>
     </div>
-
-      <input name="tab" type="radio" id='description' >
-      <label for='description' >Zubereitung</label>
-
-      <div class='description-content'>
-      </div>
-
+    <input name="tab" type="radio" id='description' >
+    <label for='description' >Zubereitung</label>
+    <div class='description-content'>
+    </div>
   </div
   `);
   tabs.children[0].querySelector('.ingredients-content').appendChild(ingredientsContent);
