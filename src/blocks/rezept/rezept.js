@@ -1,12 +1,12 @@
+/* eslint-disable prefer-destructuring */
 import { decorateIcons } from '../../../scripts/scripts.js';
 
 // extract the infos from the block
 function getCfg(block) {
-  let cfg = { rezeptinfo: {}, zutaten: [], zubereitung: "" };
-  let active = "rezeptinfo";
+  const cfg = { rezeptinfo: {}, zutaten: [], zubereitung: '' };
+  let active = 'rezeptinfo';
 
-  [...block.children].forEach(element => {
-
+  [...block.children].forEach((element) => {
     // check for table section change
     switch (element.children[0].innerText) {
       case 'Zutaten':
@@ -15,6 +15,8 @@ function getCfg(block) {
       case 'Zubereitung':
         active = 'zubereitung';
         return;
+      default:
+        break;
     }
 
     // fil content for different sections
@@ -35,7 +37,9 @@ function getCfg(block) {
         // description as plain DOM object
         cfg[active] = element.children[0];
         break;
-      }
+      default:
+        break;
+    }
   });
   return cfg;
 }
@@ -82,7 +86,7 @@ function getRecipeInfoDOM(cfg) {
 }
 
 // create table for list of ingredients and addtional infos
-function getIngredientsDOM(cfg, portions,saisonal) {
+function getIngredientsDOM(cfg, portions, saisonal) {
   // start table
   const table = document.createRange().createContextualFragment(`
   <table class='recipe-list'>
@@ -95,18 +99,17 @@ function getIngredientsDOM(cfg, portions,saisonal) {
   `);
 
   const tbody = table.children[0].querySelector('tbody');
-  let row,cell,th;
+  let row; let cell; let th;
   // go through list of ingredients
-  cfg.forEach(element => {
+  cfg.forEach((element) => {
     row = tbody.insertRow();
     // if its a subtitle
     if (element.length === 1) {
       th = document.createElement('th');
-      th.setAttribute('class','h4')
-      th.setAttribute('colspan','2')
+      th.setAttribute('class', 'h4');
+      th.setAttribute('colspan', '2');
       th.innerHTML = element[0];
-      row.append(th)
-      
+      row.append(th);
     } else {
       // ingredient entry
       cell = row.insertCell();
@@ -117,13 +120,13 @@ function getIngredientsDOM(cfg, portions,saisonal) {
   });
 
   // if season text is required
-  if (saisonal.toLowerCase() === "ja") {
+  if (saisonal.toLowerCase() === 'ja') {
     row = tbody.insertRow();
     th = document.createElement('th');
-    th.setAttribute('class','h4')
-    th.setAttribute('colspan','2')
+    th.setAttribute('class', 'h4');
+    th.setAttribute('colspan', '2');
     th.innerHTML = 'Saisonbedingt sind leider nicht alle Artikel dauerhaft in unserem Sortiment verfügbar';
-    row.append(th)
+    row.append(th);
   }
 
   return table;
@@ -143,8 +146,8 @@ function getSwitcherDOM(ingredientsContent, descriptionContent) {
     </div>
   </div
   `);
-  tabs.children[0].querySelector('.ingredients-content').appendChild(ingredientsContent)
-  tabs.children[0].querySelector('.description-content').appendChild(descriptionContent)
+  tabs.children[0].querySelector('.ingredients-content').appendChild(ingredientsContent);
+  tabs.children[0].querySelector('.description-content').appendChild(descriptionContent);
   return tabs;
 }
 
@@ -163,10 +166,11 @@ export default function decorate(block) {
   // render the recipe info
   block.append(getRecipeInfoDOM(cfg.rezeptinfo));
 
-  // render the tab switcher 
+  // render the tab switcher
   block.append(getSwitcherDOM(
     getIngredientsDOM(cfg.zutaten, cfg.rezeptinfo.Portionen, cfg.rezeptinfo.Saisonal),
-    getDescriptionDOM(cfg.zubereitung)));
+    getDescriptionDOM(cfg.zubereitung),
+  ));
 
   // render footer with links
   block.append(document.createRange().createContextualFragment(`
@@ -180,8 +184,6 @@ export default function decorate(block) {
         Drucken
       </button>
     </div>
-  `))
+  `));
   decorateIcons(block);
 }
-
-

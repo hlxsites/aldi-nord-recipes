@@ -31,10 +31,8 @@ export default function decorate(block) {
       liEntry.append(name.replace('ernaehrungsform', 'ernährungsform'));
     } else {
       const link = document.createElement('a');
-      
       href += `/${element}`;
       link.setAttribute('href', href);
-
       link.innerText = element.replace('ernaehrungsform', 'ernährungsform');
       liEntry.append(link);
     }
