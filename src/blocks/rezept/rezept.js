@@ -118,14 +118,12 @@ function getIngredientsDOM(cfg, portions,saisonal) {
 
   // if season text is required
   if (saisonal.toLowerCase() === "ja") {
-    const saisonText = document.createRange().createContextualFragment(`
-    <tr>
-      <th class='h4' colspan='2'>
-        Saisonbedingt sind leider nicht alle Artikel dauerhaft in unserem Sortiment verfügbar.
-      </th>
-    </tr>
-    `);
-    tbody.appendChild(saisonText)
+    row = tbody.insertRow();
+    th = document.createElement('th');
+    th.setAttribute('class','h4')
+    th.setAttribute('colspan','2')
+    th.innerHTML = 'Saisonbedingt sind leider nicht alle Artikel dauerhaft in unserem Sortiment verfügbar';
+    row.append(th)
   }
 
   return table;
@@ -135,19 +133,22 @@ function getIngredientsDOM(cfg, portions,saisonal) {
 function getSwitcherDOM(ingredientsContent, descriptionContent) {
   const tabs = document.createRange().createContextualFragment(`
   <div class='switch'>
-    <div class='switch-ingredients'>
-      <input name="tab" type="radio" checked="checked">
-      <label>Zutaten</label>
+
+      <input name="tab" type="radio"  id='ingredients' checked="checked">
+      <label for='ingredients'>Zutaten</label>
       <div class='ingredients-content'>
-      </div>
+
+
     </div>
-    <div class='switch-prepare'>
-      <input name="tab" type="radio" checked="checked">
-      <label>Zubereitung</label>
+
+      <input name="tab" type="radio" id='description' >
+      <label for='description' >Zubereitung</label>
+
       <div class='description-content'>
       </div>
-    </div>
-  </div`);
+
+  </div
+  `);
   tabs.children[0].querySelector('.ingredients-content').appendChild(ingredientsContent)
   tabs.children[0].querySelector('.description-content').appendChild(descriptionContent)
   return tabs;
