@@ -6,8 +6,8 @@
   "scripts": {
     "test": "wtr \"./test/**/*.test.js\" --node-resolve --port=2000 --coverage",
     "test:watch": "npm test -- --watch",
-    "lint:js": "eslint .",
-    "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css'",
+    "lint:js": "eslint . --fix",
+    "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css' --fix",
     "lint": "npm run lint:js && npm run lint:css",
     "build": "babel src/blocks --out-dir dist/blocks",
     "start": "concurrently \"babel src/blocks --watch --out-dir dist/blocks\" \"hlx up --print-index\""

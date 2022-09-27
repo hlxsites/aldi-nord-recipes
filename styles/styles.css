@@ -162,7 +162,8 @@ a.button.primary, button.primary {
 
 a.button.secondary, button.secondary {
     border-color: #d5dce6;
-    color: #2490d7;
+    background: #2490d7;
+    color:#d5dce6;
     transition: border .3s,color .3s;
 }
 
