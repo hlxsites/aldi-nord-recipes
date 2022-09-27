@@ -1,3 +1,5 @@
+import { createOptimizedPicture } from '../../../scripts/scripts.js';
+
 export default function decorate(block) {
   // get image and caption divs
   let imageDiv = block.children[0].children[0];
@@ -25,4 +27,6 @@ export default function decorate(block) {
     headDiv.append(text);
     title.after(headDiv);
   }
+
+  block.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '1200' }])));
 }

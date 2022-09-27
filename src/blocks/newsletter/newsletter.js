@@ -20,6 +20,8 @@ export default function decorate(block) {
     const appImageContainer = apps.querySelector('.newsletter-apps > p');
     left.appendChild(appImageContainer.querySelector('picture'));
     left.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '80' }])));
+    left.querySelector('img').setAttribute('width', 80);
+    left.querySelector('img').setAttribute('height', 80);
     apps.removeChild(appImageContainer);
 
     // Move remaining content to right
@@ -27,7 +29,16 @@ export default function decorate(block) {
       apps.removeChild(elem);
       right.appendChild(elem);
     });
-    right.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ height: '40' }])));
+    right.querySelectorAll('img').forEach((img, i) => {
+      const parent = img.parentNode.parentNode;
+      const width = i === 0 ? 120 : 133;
+      const height = 40;
+
+      img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width }]));
+
+      parent.querySelector('img').setAttribute('width', width);
+      parent.querySelector('img').setAttribute('height', height);
+    });
 
     apps.appendChild(appContent);
 

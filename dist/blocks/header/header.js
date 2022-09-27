@@ -99,6 +99,8 @@ export default async function decorate(block) {
     width: '80',
     height: '84'
   }])));
+  logoContainer.querySelector('img').setAttribute('width', 80);
+  logoContainer.querySelector('img').setAttribute('height', 84);
   block.appendChild(headerFragment);
   decorateIcons(block);
 }
